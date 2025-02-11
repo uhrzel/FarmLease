@@ -14,7 +14,6 @@
 
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
-
             <!-- Name Fields -->
             <div class="grid grid-cols-3 gap-4">
                 <div class="relative">
@@ -219,26 +218,18 @@
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            // Convert canvas image to Blob (JPEG format)
             canvas.toBlob(function(blob) {
                 let file = new File([blob], `identity_${Date.now()}.jpg`, {
                     type: "image/jpeg"
                 });
-
-                // Append file to FormData and update hidden input field
                 let dataTransfer = new DataTransfer();
                 dataTransfer.items.add(file);
 
                 let identityInput = document.getElementById("identity_recognition");
                 identityInput.files = dataTransfer.files;
             }, "image/jpeg");
-
-            // Show the captured image
             document.getElementById("capturedImage").src = canvas.toDataURL("image/jpeg");
             document.getElementById("capturedImagePreview").classList.remove("hidden");
-
-            // Close the modal
             document.getElementById("cameraModal").classList.add("hidden");
         });
 
@@ -247,8 +238,6 @@
             event.preventDefault(); // Prevent form submission
 
             document.getElementById("cameraModal").classList.add("hidden");
-
-            // Stop the camera stream
             let video = document.getElementById("video");
             let stream = video.srcObject;
             if (stream) {
@@ -256,15 +245,11 @@
                 tracks.forEach(track => track.stop());
             }
         });
-        // Load saved image from local storage
         window.onload = function() {
             document.getElementById("capturedImagePreview").classList.add("hidden");
             document.getElementById("capturedImage").src = "";
             document.getElementById("identity_recognition").value = "";
         };
-
-
-
         document.addEventListener("DOMContentLoaded", function() {
             const citySelect = document.getElementById("city");
             const barangaySelect = document.getElementById("barangay");
@@ -276,16 +261,14 @@
                     citySelect.innerHTML = '<option value="">Select City</option>';
                     data.forEach((city) => {
                         let option = document.createElement("option");
-                        option.value = city.code; // Store city code
+                        option.value = city.code; 
                         option.text = city.name;
                         citySelect.appendChild(option);
                     });
                 });
-
-            // Load barangays based on selected city
             citySelect.addEventListener("change", function() {
                 let cityCode = this.value;
-                barangaySelect.innerHTML = '<option value="">Select Barangay</option>'; // Reset barangay dropdown
+                barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
 
                 if (cityCode) {
                     fetch(`https://psgc.gitlab.io/api/cities/${cityCode}/barangays/`)
