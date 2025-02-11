@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
@@ -27,24 +29,62 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
+
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+                'firstname' => ['required', 'string', 'max:255'],
+                'middlename' => ['nullable', 'string', 'max:255'],
+                'lastname' => ['required', 'string', 'max:255'],
+                'username' => ['required', 'string', 'max:255', 'unique:users'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
+                'phone_number' => ['required', 'string', 'max:15'],
+                'city' => ['required', 'string', 'max:255'],
+                'barangay' => ['required', 'string', 'max:255'],
+                'street_address' => ['required', 'string', 'max:255'],
+                'zipcode' => ['required', 'string', 'max:10'],
+                'valid_id' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
+                'identity_recognition' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            // Handle file uploads
+            $validIdPath = $request->file('valid_id')->store('valid_ids', 'public');
+            $identityRecognitionPath = null;
 
-        event(new Registered($user));
+            if ($request->hasFile('identity_recognition')) {
+                $identityRecognitionPath = $request->file('identity_recognition')->store('identity_recognition', 'public');
+            }
 
-        Auth::login($user);
+            $user = User::create([
+                'firstname' => $request->firstname,
+                'middlename' => $request->middlename,
+                'lastname' => $request->lastname,
+                'username' => $request->username,
+                'email' => $request->email,
+                'phone_number' => $request->phone_number,
+                'city' => $request->city,
+                'barangay' => $request->baranggay,
+                'street_address' => $request->street_address,
+                'zipcode' => $request->zipcode,
+                'valid_id' => $validIdPath,
+                'identity_recognition' => $identityRecognitionPath,
+                'password' => Hash::make($request->password),
+            ]);
 
-        return redirect(route('dashboard', absolute: false));
+            event(new Registered($user));
+            Auth::login($user);
+
+            return redirect(route('dashboard', absolute: false));
+        } catch (\Exception $e) {
+            Log::error('Registration error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all(),
+            ]);
+
+            return back()->withErrors(['error' => 'Something went wrong during registration. Please try again.']);
+        }
     }
 }
