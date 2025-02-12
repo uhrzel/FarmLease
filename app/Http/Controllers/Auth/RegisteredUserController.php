@@ -48,6 +48,7 @@ class RegisteredUserController extends Controller
                 'valid_id' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:2048'],
                 'identity_recognition' => 'required|image|mimes:jpeg,png,jpg|max:2048',
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'role' => ['required', 'in:admin,superadmin,lessee,land_owner,tenant'],
             ]);
 
             // Handle file uploads
@@ -72,10 +73,11 @@ class RegisteredUserController extends Controller
                 'valid_id' => $validIdPath,
                 'identity_recognition' => $identityRecognitionPath,
                 'password' => Hash::make($request->password),
+                'role' => $request->role,
             ]);
 
             event(new Registered($user));
-            Auth::login($user);
+            /*         Auth::login($user); */
 
             return redirect(route('dashboard', absolute: false));
         } catch (\Exception $e) {

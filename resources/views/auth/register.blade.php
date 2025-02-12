@@ -76,6 +76,18 @@
             </div>
 
             <div class="mt-6">
+                <label class="text-gray-600 text-sm mb-2 block">Role</label>
+                <select name="role" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" required>
+                    <option value="tenant">Tenant</option>
+                    <option value="lessee">Lessee</option>
+                    <option value="land_owner">Land Owner</option>
+                    <option value="admin">Admin</option>
+                    <!--                     <option value="superadmin">Super Admin</option> -->
+                </select>
+            </div>
+
+
+            <div class="mt-6">
                 <h3 class="font-bold text-lg text-gray-800">Profile Verification</h3>
                 <div class="mt-2">
                     <label class="text-gray-600 text-sm mb-2 block">Valid ID</label>
