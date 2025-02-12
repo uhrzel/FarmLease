@@ -4,7 +4,7 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center mt-2">
+                <div class="shrink-0 flex items-center mt-1">
                     <a href="{{ route('dashboard') }}">
                         <img src="{{ asset('assets/images/logo.png' ) }}" alt="logo" class='block fill-current text-gray-800 dark:text-gray-200' style="height: 50px; width: 60px;" />
                     </a>
@@ -15,33 +15,33 @@
                     @auth
                     @if(auth()->user()->role === 'tenant')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('Home') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+
+                        <x-nav-link :href="route('about')" :active="request()->routeIs('about')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('About') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        <x-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('FAQs') }}
                         </x-nav-link>
-
                     </div>
-
                     <!-- Lessee -->
                     @elseif(auth()->user()->role === 'lessee')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('Home') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+
+                        <x-nav-link :href="route('about')" :active="request()->routeIs('about')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('About') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        <x-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')"
                             class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('FAQs') }}
                         </x-nav-link>
@@ -133,7 +133,7 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
-                @elseif(auth()->user()->role === 'lessee') 
+                @elseif(auth()->user()->role === 'lessee')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
@@ -201,24 +201,24 @@
             @auth
             <!-- tenant -->
             @if(auth()->user()->role === 'tenant')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                 {{ __('About') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
                 {{ __('FAQs') }}
             </x-responsive-nav-link>
             <!-- lessee -->
             @elseif(auth()->user()->role === 'lessee')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
                 {{ __('About') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
                 {{ __('FAQs') }}
             </x-responsive-nav-link>
             <!-- Landowner -->
