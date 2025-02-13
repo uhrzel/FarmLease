@@ -6,14 +6,28 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/', fn() => view('welcome'));
-Route::middleware(['auth', 'verified'])->group(function () {
-    /* Default */
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
 
-    // Role-Based for tenant and lessee
-    Route::get('/home', fn() => view('users.' . Auth::user()->role . '.home'))->name('home');
-    Route::get('/about', fn() => view('users.' . Auth::user()->role . '.about'))->name('about');
-    Route::get('/faqs', fn() => view('users.' . Auth::user()->role . '.faqs'))->name('faqs');
+// Authenticated Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    // Role-Based Navigation
+    Route::get('/home', function () {
+        $role = Auth::user()->role;
+        if ($role === 'land_owner') {
+            return view('users.landowner.home');
+        }
+        return view("users.$role.home");
+    })->name('home');
+    // Only for tenant & lessee
+    Route::get('/about', fn() => view("users." . Auth::user()->role . ".about"))->name('about')
+        ->where('role', 'tenant|lessee');
+    Route::get('/faqs', fn() => view("users." . Auth::user()->role . ".faqs"))->name('faqs')
+        ->where('role', 'tenant|lessee');
+
+    // Route for Landowner Statistics
+    Route::get('/landowner/stats', fn() => view('users.landowner.stats'))
+        ->middleware('auth')
+        ->name('stats');
 });
 
 // Profile Routes

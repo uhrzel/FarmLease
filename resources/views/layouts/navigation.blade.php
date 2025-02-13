@@ -50,8 +50,14 @@
                     <!-- Landowner -->
                     @elseif(auth()->user()->role === 'land_owner')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
+                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             {{ __('Home') }}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('stats')" :active="request()->routeIs('stats')"
+                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            {{ __('Statistics') }}
                         </x-nav-link>
                     </div>
 
@@ -87,6 +93,18 @@
             </div>
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+                @auth
+                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner')
+                <!-- Notification Button -->
+                <button type="button"
+                    class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                        3
+                    </span>
+                </button>
+                @endif
+                @endauth
                 <button id="theme-toggle" type="button"
                     class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -117,9 +135,6 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-bell mr-2"></i> {{ __('Notification') }}
                         </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -152,10 +167,36 @@
                             <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-bell mr-2"></i> {{ __('Notification') }}
-                        </x-dropdown-link>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
 
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+                @elseif(auth()->user()->role === 'land_owner')
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ Auth::user()->username }}</div>
+
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -172,6 +213,18 @@
                 @endauth
             </div>
             <div class="-me-2 flex items-center sm:hidden gap-4">
+                @auth
+                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner')
+                <!-- Notification Button -->
+                <button type="button"
+                    class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                    <i class="fas fa-bell text-lg"></i>
+                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                        3
+                    </span>
+                </button>
+                @endif
+                @endauth
                 <button id="theme-toggle-mobile" type="button"
                     class="w-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon-mobile" class="hidden w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20"
@@ -223,8 +276,11 @@
             </x-responsive-nav-link>
             <!-- Landowner -->
             @elseif(auth()->user()->role === 'land_owner')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('stats')" :active="request()->routeIs('stats')">
+                {{ __('Statistics') }}
             </x-responsive-nav-link>
             <!--Admin  -->
             @elseif(auth()->user()->role === 'admin')
@@ -250,15 +306,9 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    <i class="fas fa-bell mr-2"></i> {{ __('Notification') }}
-                </x-responsive-nav-link>
-
-
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-
                     <x-responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">
@@ -271,9 +321,20 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
                 </x-responsive-nav-link>
-
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+            @elseif(auth()->user()->role === 'land_owner')
+            <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Notification') }}
+                    <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
                 </x-responsive-nav-link>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
