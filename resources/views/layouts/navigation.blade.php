@@ -103,7 +103,7 @@
                 </div>
             </div>
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
                 @auth
                 @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Button -->
@@ -133,59 +133,95 @@
                 @if(auth()->user()->role === 'tenant')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                        <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
+                            <!-- Profile Image -->
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
                     </x-slot>
+
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        <!-- User Information in Dropdown -->
+                        <div class="px-4 py-3 text-center">
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
+                            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ Auth::user()->role }}
+                            </p>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Profile Link -->
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-user-circle text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
-                        <!-- Authentication -->
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center px-4 py-2">
+                                <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-300 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
+
+
                 @elseif(auth()->user()->role === 'lessee')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                        <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
+                            <!-- Profile Image -->
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        <!-- User Information in Dropdown -->
+                        <div class="px-4 py-3 text-center">
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
+                            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ Auth::user()->role }}
+                            </p>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Profile Link -->
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-user-circle text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
 
-                        <!-- Authentication -->
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center px-4 py-2">
+                                <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-300 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -193,29 +229,46 @@
                 @elseif(auth()->user()->role === 'land_owner')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                        <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
+                            <!-- Profile Image -->
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        <!-- User Information in Dropdown -->
+                        <div class="px-4 py-3 text-center">
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
+                            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ Auth::user()->role }}
+                            </p>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Profile Link -->
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-user-circle text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
-                        <!-- Authentication -->
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center px-4 py-2">
+                                <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-300 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -223,29 +276,46 @@
                 @elseif(auth()->user()->role === 'admin')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                        <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
+                            <!-- Profile Image -->
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        <!-- User Information in Dropdown -->
+                        <div class="px-4 py-3 text-center">
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
+                            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ Auth::user()->role }}
+                            </p>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Profile Link -->
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-user-circle text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
-                        <!-- Authentication -->
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center px-4 py-2">
+                                <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-300 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -253,29 +323,46 @@
                 @elseif(auth()->user()->role === 'superadmin')
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->username }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                        <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
+                            <!-- Profile Image -->
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        <!-- User Information in Dropdown -->
+                        <div class="px-4 py-3 text-center">
+                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                                class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
+                                alt="User Profile" style="height: 40px; width: 40px;">
+                            <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                                {{ Auth::user()->firstname }} {{ Auth::user()->lastname }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">
+                                {{ Auth::user()->role }}
+                            </p>
+                        </div>
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Profile Link -->
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-user-circle text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
-                        <!-- Authentication -->
+
+                        <hr class="border-gray-200 dark:border-gray-600">
+
+                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-
                             <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                                onclick="event.preventDefault(); this.closest('form').submit();"
+                                class="flex items-center px-4 py-2">
+                                <i class="fas fa-sign-out-alt text-gray-600 dark:text-gray-300 mr-2"></i>
+                                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Log Out') }}</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
