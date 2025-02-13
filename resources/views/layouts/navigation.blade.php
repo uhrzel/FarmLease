@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center mt-1">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="#">
                         <img src="{{ asset('assets/images/logo.png' ) }}" alt="logo" class='block fill-current text-gray-800 dark:text-gray-200' style="height: 50px; width: 60px;" />
                     </a>
                 </div>
@@ -16,34 +16,34 @@
                     @if(auth()->user()->role === 'tenant')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('Home') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-home mr-2"></i> {{ __('Home') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('about')" :active="request()->routeIs('about')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('About') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-info-circle mr-2"></i> {{ __('About') }}
                         </x-nav-link>
                         <x-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('FAQs') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
                         </x-nav-link>
                     </div>
                     <!-- Lessee -->
                     @elseif(auth()->user()->role === 'lessee')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('Home') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-home mr-2"></i> {{ __('Home') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('about')" :active="request()->routeIs('about')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('About') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-info-circle mr-2"></i> {{ __('About') }}
                         </x-nav-link>
                         <x-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('FAQs') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
                         </x-nav-link>
                     </div>
 
@@ -51,41 +51,52 @@
                     @elseif(auth()->user()->role === 'land_owner')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('Home') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-home mr-2"></i> {{ __('Home') }}
                         </x-nav-link>
 
                         <x-nav-link :href="route('stats')" :active="request()->routeIs('stats')"
-                            class="text-xl font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
-                            {{ __('Statistics') }}
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-chart-bar mr-2"></i> {{ __('Statistics') }}
                         </x-nav-link>
                     </div>
 
                     <!--Admin  -->
                     @elseif(auth()->user()->role === 'admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Home') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('About') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('FAQs') }}
+                        <x-nav-link :href="route('home')" :active="request()->routeIs('home')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-home mr-2"></i> {{ __('Home') }}
                         </x-nav-link>
                     </div>
                     <!-- Superadmin -->
                     @elseif(auth()->user()->role === 'superadmin')
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Home') }}
+                        <x-nav-link :href="route('users')" :active="request()->routeIs('users')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-users mr-2"></i> {{ __('Users') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('About') }}
+
+                        <x-nav-link :href="route('land_posting')" :active="request()->routeIs('land_posting')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-landmark mr-2"></i> {{__('Land posting')}}
                         </x-nav-link>
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('FAQs') }}
+
+                        <x-nav-link :href="route('generate_form')" :active="request()->routeIs('generate_form')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-file-alt mr-2"></i>{{__('Generate Form')}}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('transactions')" :active="request()->routeIs('transactions')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-exchange-alt mr-2"></i> {{__('Transactions')}}
+                        </x-nav-link>
+
+                        <x-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-comment-alt mr-2"></i> {{__('Feedbacks')}}
+                        </x-nav-link>
+
                     </div>
                     @endif
                     @endauth
@@ -94,7 +105,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-4">
                 @auth
-                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner')
+                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Button -->
                 <button type="button"
                     class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
@@ -209,12 +220,72 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+                @elseif(auth()->user()->role === 'admin')
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ Auth::user()->username }}</div>
+
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+                @elseif(auth()->user()->role === 'superadmin')
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                            <div>{{ Auth::user()->username }}</div>
+
+                            <div class="ms-1">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </button>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('profile.edit')">
+                            <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                                <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
                 @endif
                 @endauth
             </div>
             <div class="-me-2 flex items-center sm:hidden gap-4">
                 @auth
-                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner')
+                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Button -->
                 <button type="button"
                     class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
@@ -255,41 +326,53 @@
             <!-- tenant -->
             @if(auth()->user()->role === 'tenant')
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('Home') }}
+                <i class="fas fa-home mr-2"></i> {{ __('Home') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
-                {{ __('About') }}
+                <i class="fas fa-info-circle mr-2"></i> {{ __('About') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
-                {{ __('FAQs') }}
+                <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
             </x-responsive-nav-link>
             <!-- lessee -->
             @elseif(auth()->user()->role === 'lessee')
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('Home') }}
+                <i class="fas fa-home mr-2"></i> {{ __('Home') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">
-                {{ __('About') }}
+                <i class="fas fa-info-circle mr-2"></i> {{ __('About') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
-                {{ __('FAQs') }}
+                <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
             </x-responsive-nav-link>
             <!-- Landowner -->
             @elseif(auth()->user()->role === 'land_owner')
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('Home') }}
+                <i class="fas fa-home mr-2"></i> {{ __('Home') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('stats')" :active="request()->routeIs('stats')">
-                {{ __('Statistics') }}
+                <i class="fas fa-chart-bar mr-2"></i> {{ __('Statistics') }}
             </x-responsive-nav-link>
             <!--Admin  -->
             @elseif(auth()->user()->role === 'admin')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Home') }}
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                <i class="fas fa-home mr-2"></i> {{ __('Home') }}
             </x-responsive-nav-link>
             @elseif(auth()->user()->role === 'superadmin')
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Home') }}
+            <x-responsive-nav-link :href="route('users')" :active="request()->routeIs('users')">
+                <i class="fas fa-users mr-2"></i> {{ __('Users') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('land_posting')" :active="request()->routeIs('land_posting')">
+                <i class="fas fa-landmark mr-2"></i> {{__('Land posting')}}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('generate_form')" :active="request()->routeIs('generate_form')">
+                <i class="fas fa-file-alt mr-2"></i>{{__('Generate Form')}}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('transactions')" :active="request()->routeIs('transactions')">
+                <i class="fas fa-exchange-alt mr-2"></i> {{__('Transactions')}}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')">
+                <i class="fas fa-comment-alt mr-2"></i> {{__('Feedbacks')}}
             </x-responsive-nav-link>
             @endif
             @endauth
@@ -332,6 +415,36 @@
                 </form>
             </div>
             @elseif(auth()->user()->role === 'land_owner')
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+            @elseif(auth()->user()->role === 'admin')
+            <div class="mt-3 space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')">
+                    <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        <i class="fas fa-sign-out-alt mr-2"></i> {{ __('Log Out') }}
+                    </x-responsive-nav-link>
+                </form>
+            </div>
+            @elseif(auth()->user()->role === 'superadmin')
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     <i class="fas fa-user-circle mr-2"></i> {{ __('Profile') }}

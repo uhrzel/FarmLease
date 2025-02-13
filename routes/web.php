@@ -15,6 +15,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $role = Auth::user()->role;
         if ($role === 'land_owner') {
             return view('users.landowner.home');
+        } else if ($role === 'admin') {
+            return view('users.admin.home');
         }
         return view("users.$role.home");
     })->name('home');
@@ -28,6 +30,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landowner/stats', fn() => view('users.landowner.stats'))
         ->middleware('auth')
         ->name('stats');
+
+    // Route for Superadmin
+    Route::get('/superadmin/users', fn() => view('users.superadmin.users'))
+        ->middleware('auth')
+        ->name('users');
+    Route::get('/superadmin/generate_form', fn() => view('users.superadmin.generate_form'))
+        ->middleware('auth')
+        ->name('generate_form');
+    Route::get('/superadmin/land_posting', fn() => view('users.superadmin.land_posting'))
+        ->middleware('auth')
+        ->name('land_posting');
+    Route::get('/superadmin/transactions', fn() => view('users.superadmin.transactions'))
+        ->middleware('auth')
+        ->name('transactions');
+    Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
+        ->middleware('auth')
+        ->name('feedbacks');
 });
 
 // Profile Routes

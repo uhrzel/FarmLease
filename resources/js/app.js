@@ -4,50 +4,41 @@ import Alpine from "alpinejs";
 window.Alpine = Alpine;
 Alpine.start();
 
-// DARK MODE TOGGLE BUTTON FOR DESKTOP & MOBILE
+// DARK MODE TOGGLE BUTTON
 function setupThemeToggle(buttonId, darkIconId, lightIconId) {
     var themeToggleDarkIcon = document.getElementById(darkIconId);
     var themeToggleLightIcon = document.getElementById(lightIconId);
     var themeToggleBtn = document.getElementById(buttonId);
-
-    // Check the theme and apply the correct icon visibility
-    if (
-        localStorage.getItem("color-theme") === "dark" ||
-        (!("color-theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-        themeToggleLightIcon.classList.remove("hidden");
+    function applyTheme(theme) {
+        if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+            themeToggleDarkIcon.classList.add("hidden");
+            themeToggleLightIcon.classList.remove("hidden");
+            localStorage.setItem("color-theme", "dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+            themeToggleDarkIcon.classList.remove("hidden");
+            themeToggleLightIcon.classList.add("hidden");
+            localStorage.setItem("color-theme", "light");
+        }
+    }
+    const savedTheme = localStorage.getItem("color-theme");
+    if (savedTheme) {
+        applyTheme(savedTheme);
+    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        applyTheme("dark");
     } else {
-        themeToggleDarkIcon.classList.remove("hidden");
+        applyTheme("light");
     }
 
-    // Toggle event listener
+    // Toggle theme on button click
     themeToggleBtn.addEventListener("click", function () {
-        themeToggleDarkIcon.classList.toggle("hidden");
-        themeToggleLightIcon.classList.toggle("hidden");
-
-        // Toggle between dark and light mode
-        if (localStorage.getItem("color-theme")) {
-            if (localStorage.getItem("color-theme") === "light") {
-                document.documentElement.classList.add("dark");
-                localStorage.setItem("color-theme", "dark");
-            } else {
-                document.documentElement.classList.remove("dark");
-                localStorage.setItem("color-theme", "light");
-            }
-        } else {
-            if (document.documentElement.classList.contains("dark")) {
-                document.documentElement.classList.remove("dark");
-                localStorage.setItem("color-theme", "light");
-            } else {
-                document.documentElement.classList.add("dark");
-                localStorage.setItem("color-theme", "dark");
-            }
-        }
+        const currentTheme = document.documentElement.classList.contains("dark")
+            ? "light"
+            : "dark";
+        applyTheme(currentTheme);
     });
 }
-
-// Initialize theme toggle for both desktop and mobile
 setupThemeToggle(
     "theme-toggle",
     "theme-toggle-dark-icon",

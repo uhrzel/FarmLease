@@ -25,8 +25,12 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
+
+        // Check if the authenticated user is a superadmin
+        if (Auth::user()->role === 'superadmin') {
+            return redirect()->route('users');
+        }
 
         return redirect()->intended(route('home', absolute: false));
     }
