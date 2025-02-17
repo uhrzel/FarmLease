@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,9 +33,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('stats');
 
     // Route for Superadmin
-    Route::get('/superadmin/users', fn() => view('users.superadmin.users'))
-        ->middleware('auth')
-        ->name('users');
+    Route::get('/superadmin/users', [UserController::class, 'showUsers'])->middleware('auth')->name('users');
+
     Route::get('/superadmin/generate_form', fn() => view('users.superadmin.generate_form'))
         ->middleware('auth')
         ->name('generate_form');
