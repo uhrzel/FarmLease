@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LandListingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landowner/stats', fn() => view('users.landowner.stats'))
         ->middleware('auth')
         ->name('stats');
+    Route::post('/land-listings', [LandListingController::class, 'store'])->name('landlistings.store')
+        ->middleware('auth')
+        ->where('role', 'land_owner');
+
+
 
     // Route for Superadmin
     Route::get('/superadmin/users', [UserController::class, 'showUsers'])->middleware('auth')->name('users');

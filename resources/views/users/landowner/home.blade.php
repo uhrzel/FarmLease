@@ -9,10 +9,131 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">Welcome to the Landowner Dashboard: {{ Auth::user()->username }}</h1><span></span>
-                    <p class="text-gray-700 dark:text-gray-300">This is a secure area of the application. Only authorized users can view this page.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam placeat, quas nulla suscipit nesciunt eveniet doloribus pariatur distinctio. Excepturi nisi perferendis voluptatibus ratione error velit voluptates aperiam, sunt repellat officia facilis pariatur quae natus nam harum similique nulla animi delectus cumque laudantium fuga nihil reprehenderit! Maiores earum neque reprehenderit repellendus, ducimus tempore, doloribus sint exercitationem delectus, rem optio? Vel dignissimos similique culpa quibusdam voluptates laudantium ratione beatae alias. Est quis animi maxime dolorem illum sapiente consequatur, delectus eius aut obcaecati odit laboriosam nemo accusantium nisi ea exercitationem reiciendis consectetur iste illo. Nihil natus libero provident doloribus temporibus? Ad minima culpa iusto, ipsa suscipit sequi repudiandae ut reiciendis repellat, tenetur quo perferendis. Assumenda consequatur officia molestias possimus vitae incidunt ea ducimus cupiditate, consequuntur optio porro deserunt eligendi perspiciatis minima dolore praesentium! Omnis fugit vitae amet veniam incidunt explicabo non. Eaque distinctio corrupti omnis reprehenderit consequatur maiores, soluta assumenda magnam illo amet ea veniam earum aliquid qui ipsum fugit quae. Id, itaque quibusdam. Officiis, nam. Praesentium officia perspiciatis magnam sunt nam quaerat delectus illo rerum deleniti minus, provident ipsum, voluptatibus mollitia esse sint veniam, quod blanditiis et libero. Officia aspernatur minima voluptate perferendis mollitia rem fugiat ratione. Odit quibusdam tempora perferendis tempore recusandae exercitationem praesentium vitae ad fugit aliquid ratione beatae eaque nam, voluptate quos animi in incidunt pariatur deserunt quas deleniti veritatis. Minus, cumque necessitatibus deserunt atque vel eveniet laborum harum reprehenderit, vero blanditiis mollitia expedita, debitis commodi. Officiis fugiat mollitia ab veniam temporibus omnis ad, incidunt inventore nulla nesciunt veritatis magni nisi placeat totam consequatur libero consectetur quo cumque quis. Repellat sunt excepturi explicabo repudiandae. Voluptate atque quisquam, obcaecati inventore dolore rerum velit nostrum iusto, nobis architecto excepturi, eos explicabo ipsum laudantium facere culpa laboriosam. Alias perferendis enim illum explicabo, voluptatem voluptates non aut tenetur assumenda libero saepe architecto quibusdam hic dolorem molestias delectus distinctio veritatis quis expedita fuga. Facere, tempore illo, aut, architecto sequi incidunt dicta quidem laboriosam expedita assumenda eos enim quam nisi dolorem voluptates nulla nobis laudantium non voluptas dolores modi ea dolor. Nihil tempora assumenda aut quos impedit facilis esse laborum delectus, nam ipsa adipisci soluta incidunt voluptates vitae vero quas ex similique repellendus repellat perspiciatis mollitia consectetur excepturi! Cum tempora eligendi odit consectetur molestias corporis debitis deleniti voluptatem quaerat. Reprehenderit odit dolores, praesentium illum numquam aliquam soluta eveniet quia magnam placeat sequi accusantium adipisci repellendus nisi accusamus ipsam quisquam in blanditiis ex tempore consectetur dolor. Quam qui autem molestiae accusamus rerum odio voluptatum fugiat incidunt! Perferendis reiciendis, ratione deserunt provident accusantium quidem voluptates aperiam. Et atque optio rem! Tempore, numquam deserunt! Quasi velit molestiae reprehenderit! Ab sequi aperiam modi sunt perferendis eos ratione magni voluptatibus ex, harum doloremque voluptates ea accusantium. Earum temporibus debitis dolore rerum, mollitia odit a totam libero commodi nulla. Doloribus vero facere dolorem, officia porro tempore dicta ipsum maxime quidem illo, ad assumenda aut, quisquam qui! Voluptates, ipsam nemo! Neque at deserunt accusantium odit, aut nulla, sint autem nesciunt doloribus debitis non ad saepe nemo quae eos deleniti. Ab, quaerat?</p>
+                    <!-- Create Button with Icon -->
+                    <button type="button" id="showFormButton"
+                        class="px-5 py-2.5 rounded-full text-white text-sm tracking-wider font-medium border border-current outline-none bg-blue-700 hover:bg-blue-800 active:bg-blue-700">
+                        <i class="fas fa-plus-circle mr-2"></i>Create
+                    </button>
+
+                    <!-- Modal to Show Form -->
+                    <div id="landListingModal" class="hidden fixed inset-0 z-50 overflow-auto bg-gray-800 bg-opacity-50">
+                        <div class="flex items-center justify-center min-h-screen">
+                            <div class="bg-white dark:bg-gray-800 rounded-lg w-full max-w-4xl p-6">
+                                <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Create New Land Listing</h3>
+
+                                <!-- Land Listing Form -->
+                                <form action="{{ route('landlistings.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                        <!-- Landowner Name -->
+                                        <div class="col-span-1">
+                                            <label for="landowner_name" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Landowner Name</label>
+                                            <input type="text" name="landowner_name" id="landowner_name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Location -->
+                                        <div class="col-span-1">
+                                            <label for="location" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Location</label>
+                                            <input type="text" name="location" id="location" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Price -->
+                                        <div class="col-span-1">
+                                            <label for="price" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Price</label>
+                                            <input type="number" step="0.01" name="price" id="price" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Phone Number -->
+                                        <div class="col-span-1">
+                                            <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Phone Number</label>
+                                            <input type="text" name="phone_number" id="phone_number" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Size -->
+                                        <div class="col-span-1">
+                                            <label for="size" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Size (in hectares)</label>
+                                            <input type="number" name="size" id="size" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Soil Quality -->
+                                        <div class="col-span-1">
+                                            <label for="soil_quality" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Soil Quality</label>
+                                            <input type="text" name="soil_quality" id="soil_quality" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Land Condition -->
+                                        <div class="col-span-1">
+                                            <label for="land_condition" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Land Condition</label>
+                                            <input type="text" name="land_condition" id="land_condition" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" required>
+                                        </div>
+
+                                        <!-- Description -->
+                                        <div class="col-span-1">
+                                            <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
+                                            <textarea name="description" id="description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white" rows="3" required></textarea>
+                                        </div>
+
+                                        <!-- Image -->
+                                        <div class="col-span-1">
+                                            <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Image</label>
+                                            <input type="file" name="image" id="image" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md dark:bg-gray-700 dark:text-white">
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden Landowner ID -->
+                                    <input type="hidden" name="landowner_id" value="{{ Auth::id() }}">
+
+                                    <!-- Submit and Close Buttons (same line) -->
+                                    <div class="mt-6 flex justify-between">
+                                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md">Submit</button>
+                                        <button type="button" id="closeModalButton" class="bg-gray-500 text-white py-2 px-4 rounded-md">Close</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- SweetAlert2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.9/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.9/dist/sweetalert2.min.js"></script>
+
+    <!-- SweetAlert Success and Error Messages -->
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: @json(session('success')),
+            showConfirmButton: true,
+        });
+    </script>
+    @elseif (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: @json(session('error')),
+            showConfirmButton: true,
+        });
+    </script>
+    @endif
+
+    <script>
+        // Toggle the visibility of the form when the button is clicked
+        document.getElementById('showFormButton').addEventListener('click', function() {
+            var modal = document.getElementById('landListingModal');
+            modal.classList.toggle('hidden');
+        });
+
+        // Close the modal when the close button is clicked
+        document.getElementById('closeModalButton').addEventListener('click', function() {
+            var modal = document.getElementById('landListingModal');
+            modal.classList.add('hidden');
+        });
+    </script>
 </x-app-layout>
