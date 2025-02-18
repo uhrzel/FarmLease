@@ -64,6 +64,12 @@ Then, run the migrations:
 php artisan migrate
 ```
 
+Activate the storage engine:
+
+```bash
+php artisan storage:link
+```
+
 ### 6️⃣ Run the Application
 
 You can run the Laravel application and assets in a single Git Bash window:
