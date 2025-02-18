@@ -50,4 +50,12 @@ class LandListingController extends Controller
             return redirect()->route('home')->with('error', 'There was an error creating the land listing. Please try again.');
         }
     }
+    public function index()
+    {
+        // Fetch all land listings with 'public' status, sorted by latest created_at
+        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+
+        // Pass data to the Blade view
+        return view('users.superadmin.land_posting', compact('landListings'));
+    }
 }

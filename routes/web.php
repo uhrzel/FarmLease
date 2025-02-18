@@ -44,9 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/superadmin/generate_form', fn() => view('users.superadmin.generate_form'))
         ->middleware('auth')
         ->name('generate_form');
-    Route::get('/superadmin/land_posting', fn() => view('users.superadmin.land_posting'))
+    /*    Route::get('/superadmin/land_posting', fn() => view('users.superadmin.land_posting'))
         ->middleware('auth')
-        ->name('land_posting');
+        ->name('land_posting'); */
+    Route::get('/superadmin/land_posting', [LandListingController::class, 'index'])->name('land_posting');
+
     Route::get('/superadmin/transactions', fn() => view('users.superadmin.transactions'))
         ->middleware('auth')
         ->name('transactions');
