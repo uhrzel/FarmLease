@@ -28,7 +28,12 @@
             @if($listing->status === 'approved')
             <figure class="flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/4 group wow fadeInUp mb-8" data-wow-duration="1s">
                 <div class="relative overflow-hidden cursor-pointer mb-6">
-                    <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}" data-gallery="gallery1" data-glightbox="Land Owner: {{ $listing->landowner_name }}" class="glightbox3">
+                    <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}"
+                        data-gallery="gallery1"
+                        data-title="Land Owner: {{ $listing->landowner_name }} <br> Location: {{ $listing->location }}"
+                        data-description="Price: {{ $listing->price }} Php <br> Size: {{ $listing->size }} <br> Soil Quality: {{ $listing->soil_quality }} <br> Land Condition: {{ $listing->land_condition }} <br> Phone: {{ $listing->phone_number }} <br> Description: {{ $listing->description }}"
+                        class="glightbox3">
+
                         <img class="block w-full h-auto transform duration-500" src="{{ asset('storage/land_images/' . basename($listing->image)) }}" alt="Land Image">
                         <div class="absolute inset-x-0 bottom-0 h-20 transition-opacity duration-500 ease-in opacity-0 group-hover:opacity-100 overflow-hidden px-4 py-2 text-gray-100 dark:text-gray-900 bg-black dark:bg-gray-200 text-center">
                             <h3 class="text-base leading-normal font-semibold my-1 text-white dark:text-gray-900">{{ $listing->landowner_name }}</h3>
@@ -38,7 +43,7 @@
                 </div>
                 <h3 class="text-base leading-normal font-semibold my-1 text-gray-900 dark:text-white">{{ $listing->landowner_name }}</h3>
                 <small class="d-block text-gray-600 dark:text-gray-400">Location: {{ $listing->location }}</small><br>
-                <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} USD</small>
+                <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} Php</small>
             </figure>
             @endif
             @empty
