@@ -17,14 +17,14 @@ class CreateLandListingsTable extends Migration
             $table->id();
             $table->string('landowner_name');
             $table->string('location');
-            $table->decimal('price', 10, 2);  // Allows for decimal values with 2 digits after the decimal point
+            $table->decimal('price', 10, 2); 
             $table->string('phone_number');
             $table->float('size');
             $table->string('soil_quality');
             $table->string('land_condition');
             $table->text('description');
-            $table->string('image')->nullable(); // Image column can be nullable if not always present
-            $table->foreignId('landowner_id')->constrained('users')->onDelete('cascade');
+            $table->string('image')->nullable(); 
+            $table->foreignId('landowner_id')->constrained('users')->onDelete('cascade'); //edit this if there any error during migration
             $table->timestamps();
         });
     }

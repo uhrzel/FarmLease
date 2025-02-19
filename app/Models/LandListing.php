@@ -28,4 +28,8 @@ class LandListing extends Model
     {
         return $this->belongsTo(User::class, 'landowner_id');
     }
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
 }

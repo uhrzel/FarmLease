@@ -18,10 +18,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
         if ($role === 'land_owner') {
             return view('users.landowner.home');
         } else if ($role === 'admin') {
-            return view('users.admin.home');
+            return app(\App\Http\Controllers\LandListingController::class)->admin();
         }
         return view("users.$role.home");
     })->name('home');
+
+    
     // Only for tenant & lessee
     Route::get('/about', fn() => view("users." . Auth::user()->role . ".about"))->name('about')
         ->where('role', 'tenant|lessee');
@@ -40,21 +42,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route for Superadmin
     Route::get('/superadmin/users', [UserController::class, 'showUsers'])->middleware('auth')->name('users');
-
     Route::get('/superadmin/generate_form', fn() => view('users.superadmin.generate_form'))
         ->middleware('auth')
         ->name('generate_form');
-    /*    Route::get('/superadmin/land_posting', fn() => view('users.superadmin.land_posting'))
-        ->middleware('auth')
-        ->name('land_posting'); */
     Route::get('/superadmin/land_posting', [LandListingController::class, 'index'])->name('land_posting');
-
     Route::get('/superadmin/transactions', fn() => view('users.superadmin.transactions'))
         ->middleware('auth')
         ->name('transactions');
     Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
         ->middleware('auth')
         ->name('feedbacks');
+
+    //Route for admin 
+    Route::get('/admin/land-listings', [LandListingController::class, 'admin'])
+        ->name('admin.landlistings')
+        ->middleware('auth');
 });
 
 // Profile Routes

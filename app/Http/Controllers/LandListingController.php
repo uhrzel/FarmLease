@@ -23,13 +23,9 @@ class LandListingController extends Controller
                 'description' => 'nullable|string',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-
-            // Handle file upload if present
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('land_images', 'public');
             }
-
-            // Create the land listing
             LandListing::create([
                 'landowner_name' => $request->landowner_name,
                 'location' => $request->location,
@@ -39,23 +35,22 @@ class LandListingController extends Controller
                 'soil_quality' => $request->soil_quality,
                 'land_condition' => $request->land_condition,
                 'description' => $request->description,
-                'image' => $imagePath ?? null, // Store image path if uploaded
-                'landowner_id' => Auth::id(),  // Store the ID of the authenticated user
+                'image' => $imagePath ?? null,
+                'landowner_id' => Auth::id(),
             ]);
-
-            // Redirect or respond as needed
             return redirect()->route('home')->with('success', 'Land listing created successfully!');
         } catch (\Exception $e) {
-            // Handle error and redirect with error message
             return redirect()->route('home')->with('error', 'There was an error creating the land listing. Please try again.');
         }
     }
-    public function index()
+    public function index() //superadmin only
     {
-        // Fetch all land listings with 'public' status, sorted by latest created_at
         $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
-
-        // Pass data to the Blade view
         return view('users.superadmin.land_posting', compact('landListings'));
+    }
+    public function admin() //admin view
+    {
+        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+        return view('users.admin.home', compact('landListings'));
     }
 }
