@@ -23,7 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return view("users.$role.home");
     })->name('home');
 
-    
+
     // Only for tenant & lessee
     Route::get('/about', fn() => view("users." . Auth::user()->role . ".about"))->name('about')
         ->where('role', 'tenant|lessee');
@@ -57,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin/land-listings', [LandListingController::class, 'admin'])
         ->name('admin.landlistings')
         ->middleware('auth');
+    Route::get('/landlistings/new', [LandListingController::class, 'newListings'])->name('landlistings.new');
+    Route::get('/landlistings/{id}', [LandListingController::class, 'show']);
+    Route::post('/landlistings/{id}/approve', [LandListingController::class, 'approve']);
+    Route::post('/landlistings/{id}/decline', [LandListingController::class, 'decline']);
 });
 
 // Profile Routes

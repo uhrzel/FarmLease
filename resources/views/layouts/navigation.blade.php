@@ -103,19 +103,37 @@
                 </div>
             </div>
             <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden sm:flex sm:items-center sm:ms-6 gap-1">
                 @auth
                 @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
-                <!-- Notification Button -->
-                <button type="button"
-                    class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                    <i class="fas fa-bell text-lg"></i>
-                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                        3
-                    </span>
-                </button>
+                <!-- Notification Dropdown -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtn"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationCount"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id="notificationContent" class="p-3 w-80 max-h-96 overflow-y-auto">
+                            <p class="text-gray-500 dark:text-gray-400">No new listings.</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
+                <!-- Modal -->
+                <x-modal name="land-listing-modal">
+                    <div id="modalContent" class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                        <!-- content ng land -->
+                    </div>
+                </x-modal>
+
                 @endif
                 @endauth
+
                 <button id="theme-toggle" type="button"
                     class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
@@ -374,15 +392,38 @@
                 @auth
                 @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Button -->
-                <button type="button"
-                    class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                    <i class="fas fa-bell text-lg"></i>
-                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                        3
-                    </span>
-                </button>
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtnRes"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationCountRes"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id="notificationContentRes"
+                            class="p-3 max-h-96 overflow-y-auto 
+                w-64 sm:w-72 md:w-80 lg:w-96 
+                max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg 
+                bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No new listings.</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
+
+                <!-- Modal -->
+                <x-modal name="land-listing-modalRes">
+                    <div id="modalContentRes" class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                        <!-- content ng land -->
+                    </div>
+                </x-modal>
+
                 @endif
                 @endauth
+
                 <button id="theme-toggle-mobile" type="button"
                     class="w-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon-mobile" class="hidden w-5 h-5 mx-auto" fill="currentColor" viewBox="0 0 20 20"
@@ -550,4 +591,207 @@
             @endauth
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const notificationBtns = document.querySelectorAll("[id^=notificationBtn]");
+            const notificationCounts = document.querySelectorAll("[id^=notificationCount]");
+            const notificationContents = document.querySelectorAll("[id^=notificationContent]");
+            const modalContents = document.getElementById("modalContent");
+            const modalContentsRes = document.getElementById("modalContentRes");
+
+            async function fetchNewLandListings() {
+                try {
+                    const response = await fetch("{{ route('landlistings.new') }}");
+                    const data = await response.json();
+
+                    notificationCounts.forEach(notificationCount => {
+                        if (data.count > 0) {
+                            notificationCount.textContent = data.count;
+                            notificationCount.classList.remove("hidden");
+                        } else {
+                            notificationCount.classList.add("hidden");
+                        }
+                    });
+
+                    let listingsHtml = "";
+                    if (data.count > 0) {
+                        data.listings.forEach((listing) => {
+                            listingsHtml += `
+                        <div class="p-3 flex items-center border-b dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 transition-all"
+                            data-listing-id="${listing.id}">
+                            <div class="w-12 h-12 flex-shrink-0">
+                                <img src="${listing.image}" alt="Land Image" class="w-full h-full object-cover rounded-full">
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white">
+                                    ${listing.landowner_name} posted a new listing
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    Location: ${listing.location}
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                        });
+                    } else {
+                        listingsHtml = "<p class='p-3 text-gray-500 dark:text-gray-400'>No new listings.</p>";
+                    }
+
+                    notificationContents.forEach(content => content.innerHTML = listingsHtml);
+
+                    document.querySelectorAll("[data-listing-id]").forEach((item) => {
+                        item.addEventListener("click", function() {
+                            const listingId = this.getAttribute("data-listing-id");
+                            openListingModal(listingId);
+                        });
+                    });
+
+                } catch (error) {
+                    console.error("Error fetching notifications:", error);
+                }
+            }
+
+            async function openListingModal(listingId) {
+                try {
+                    const response = await fetch(`/landlistings/${listingId}`);
+                    const listing = await response.json();
+
+                    modalContentsRes.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">${listing.created_at}</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Posted by <strong>${listing.landowner_name}</strong></p>
+                </div>
+                <div class="mt-4 flex justify-center">
+                    <img src="${listing.image}" alt="Land Image" class="w-full max-w-md h-60 object-cover rounded-lg shadow">
+                </div>
+                <div class="mt-4">
+                    <p class="text-gray-700 dark:text-gray-300"><strong>Location:</strong> ${listing.location}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mt-2"><strong>Description:</strong> ${listing.description}</p>
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button onclick="approveListing(${listing.id})" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
+                        Approve
+                    </button>
+                    <button onclick="declineListing(${listing.id})" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+                        Decline
+                    </button>
+                </div>
+            `;
+                    modalContents.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">${listing.created_at}</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Posted by <strong>${listing.landowner_name}</strong></p>
+                </div>
+                <div class="mt-4 flex justify-center">
+                    <img src="${listing.image}" alt="Land Image" class="w-full max-w-md h-60 object-cover rounded-lg shadow">
+                </div>
+                <div class="mt-4">
+                    <p class="text-gray-700 dark:text-gray-300"><strong>Location:</strong> ${listing.location}</p>
+                    <p class="text-gray-700 dark:text-gray-300 mt-2"><strong>Description:</strong> ${listing.description}</p>
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button onclick="approveListing(${listing.id})" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition">
+                        Approve
+                    </button>
+                    <button onclick="declineListing(${listing.id})" class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition">
+                        Decline
+                    </button>
+                </div>
+            `;
+
+                    window.dispatchEvent(new CustomEvent("open-modal", {
+                        detail: "land-listing-modal"
+                    }));
+                    window.dispatchEvent(new CustomEvent("open-modal", {
+                        detail: "land-listing-modalRes"
+                    }));
+
+                } catch (error) {
+                    console.error("Error fetching listing details:", error);
+                }
+            }
+
+            notificationBtns.forEach(btn => btn.addEventListener("click", fetchNewLandListings));
+            setInterval(fetchNewLandListings, 5000);
+            fetchNewLandListings();
+        });
+        async function approveListing(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to approve this listing?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, approve it!",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await fetch(`/landlistings/${id}/approve`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            },
+                            body: JSON.stringify({
+                                _token: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                            }),
+                        });
+
+                        Swal.fire({
+                            title: "Approved!",
+                            text: "The listing has been approved.",
+                            icon: "success",
+                            confirmButtonColor: "#28a745"
+                        }).then(() => {
+                            location.reload(); // Refresh the page
+                        });
+                    } catch (error) {
+                        console.error("Error approving listing:", error);
+                    }
+                }
+            });
+        }
+
+        async function declineListing(id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want to decline this listing?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, decline it!",
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await fetch(`/landlistings/${id}/decline`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                            },
+                            body: JSON.stringify({
+                                _token: document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                            }),
+                        });
+
+                        Swal.fire({
+                            title: "Declined!",
+                            text: "The listing has been declined.",
+                            icon: "success",
+                            confirmButtonColor: "#d33"
+                        }).then(() => {
+                            location.reload(); // Refresh the page
+                        });
+                    } catch (error) {
+                        console.error("Error declining listing:", error);
+                    }
+                }
+            });
+        }
+    </script>
 </nav>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LandListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class LandListingController extends Controller
 {
@@ -52,5 +54,70 @@ class LandListingController extends Controller
     {
         $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
         return view('users.admin.home', compact('landListings'));
+    }
+    public function newListings() //admin notification
+    {
+        $newListings = LandListing::where('status', 'pending')
+            ->join('users', 'users.id', '=', 'land_listings.landowner_id')
+            ->orderBy('land_listings.created_at', 'desc')
+            ->get([
+                'land_listings.id',
+                'land_listings.landowner_name',
+                'land_listings.location',
+                'users.identity_recognition as image',
+                'land_listings.created_at'
+            ]);
+
+        $newListings->transform(function ($listing) {
+            $listing->image = $listing->image
+                ? asset('storage/' . $listing->image)
+                : asset('images/default-placeholder.jpg');
+            return $listing;
+        });
+
+        return response()->json([
+            'count' => $newListings->count(),
+            'listings' => $newListings
+        ]);
+    }
+
+
+
+    public function show($id) //admin modal
+    {
+        $listing = LandListing::findOrFail($id);
+
+        return response()->json([
+            'id' => $listing->id,
+            'landowner_name' => $listing->landowner_name,
+            'price' => $listing->price,
+            'size' => $listing->size,
+            'soil_quality' => $listing->soil_quality,
+            'land_condition' => $listing->land_condition,
+            'location' => $listing->location,
+            'description' => $listing->description,
+            'image' => asset('storage/' . $listing->image),
+            'created_at' => Carbon::parse($listing->created_at)->diffForHumans(),
+        ]);
+    }
+
+    public function approve($id) //admin approval
+    {
+        $listing = LandListing::findOrFail($id);
+        $listing->status = 'approved';
+        $listing->approved_by = Auth::id();
+        $listing->save();
+
+        return response()->json(['message' => 'Listing approved']);
+    }
+
+    public function decline($id) //admin decline
+    {
+        $listing = LandListing::findOrFail($id);
+        $listing->status = 'declined';
+        $listing->approved_by = Auth::id();
+        $listing->save();
+
+        return response()->json(['message' => 'Listing declined']);
     }
 }
