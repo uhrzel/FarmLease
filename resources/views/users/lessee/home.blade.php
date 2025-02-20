@@ -4,15 +4,134 @@
             {{ __('Home') }}
         </h2>
     </x-slot>
-
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="{{ asset('src/css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">Welcome to the Lessee Dashboard: {{ Auth::user()->username }}</h1><span></span>
-                    <p class="text-gray-700 dark:text-gray-300">This is a secure area of the application. Only authorized users can view this page.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam placeat, quas nulla suscipit nesciunt eveniet doloribus pariatur distinctio. Excepturi nisi perferendis voluptatibus ratione error velit voluptates aperiam, sunt repellat officia facilis pariatur quae natus nam harum similique nulla animi delectus cumque laudantium fuga nihil reprehenderit! Maiores earum neque reprehenderit repellendus, ducimus tempore, doloribus sint exercitationem delectus, rem optio? Vel dignissimos similique culpa quibusdam voluptates laudantium ratione beatae alias. Est quis animi maxime dolorem illum sapiente consequatur, delectus eius aut obcaecati odit laboriosam nemo accusantium nisi ea exercitationem reiciendis consectetur iste illo. Nihil natus libero provident doloribus temporibus? Ad minima culpa iusto, ipsa suscipit sequi repudiandae ut reiciendis repellat, tenetur quo perferendis. Assumenda consequatur officia molestias possimus vitae incidunt ea ducimus cupiditate, consequuntur optio porro deserunt eligendi perspiciatis minima dolore praesentium! Omnis fugit vitae amet veniam incidunt explicabo non. Eaque distinctio corrupti omnis reprehenderit consequatur maiores, soluta assumenda magnam illo amet ea veniam earum aliquid qui ipsum fugit quae. Id, itaque quibusdam. Officiis, nam. Praesentium officia perspiciatis magnam sunt nam quaerat delectus illo rerum deleniti minus, provident ipsum, voluptatibus mollitia esse sint veniam, quod blanditiis et libero. Officia aspernatur minima voluptate perferendis mollitia rem fugiat ratione. Odit quibusdam tempora perferendis tempore recusandae exercitationem praesentium vitae ad fugit aliquid ratione beatae eaque nam, voluptate quos animi in incidunt pariatur deserunt quas deleniti veritatis. Minus, cumque necessitatibus deserunt atque vel eveniet laborum harum reprehenderit, vero blanditiis mollitia expedita, debitis commodi. Officiis fugiat mollitia ab veniam temporibus omnis ad, incidunt inventore nulla nesciunt veritatis magni nisi placeat totam consequatur libero consectetur quo cumque quis. Repellat sunt excepturi explicabo repudiandae. Voluptate atque quisquam, obcaecati inventore dolore rerum velit nostrum iusto, nobis architecto excepturi, eos explicabo ipsum laudantium facere culpa laboriosam. Alias perferendis enim illum explicabo, voluptatem voluptates non aut tenetur assumenda libero saepe architecto quibusdam hic dolorem molestias delectus distinctio veritatis quis expedita fuga. Facere, tempore illo, aut, architecto sequi incidunt dicta quidem laboriosam expedita assumenda eos enim quam nisi dolorem voluptates nulla nobis laudantium non voluptas dolores modi ea dolor. Nihil tempora assumenda aut quos impedit facilis esse laborum delectus, nam ipsa adipisci soluta incidunt voluptates vitae vero quas ex similique repellendus repellat perspiciatis mollitia consectetur excepturi! Cum tempora eligendi odit consectetur molestias corporis debitis deleniti voluptatem quaerat. Reprehenderit odit dolores, praesentium illum numquam aliquam soluta eveniet quia magnam placeat sequi accusantium adipisci repellendus nisi accusamus ipsam quisquam in blanditiis ex tempore consectetur dolor. Quam qui autem molestiae accusamus rerum odio voluptatum fugiat incidunt! Perferendis reiciendis, ratione deserunt provident accusantium quidem voluptates aperiam. Et atque optio rem! Tempore, numquam deserunt! Quasi velit molestiae reprehenderit! Ab sequi aperiam modi sunt perferendis eos ratione magni voluptatibus ex, harum doloremque voluptates ea accusantium. Earum temporibus debitis dolore rerum, mollitia odit a totam libero commodi nulla. Doloribus vero facere dolorem, officia porro tempore dicta ipsum maxime quidem illo, ad assumenda aut, quisquam qui! Voluptates, ipsam nemo! Neque at deserunt accusantium odit, aut nulla, sint autem nesciunt doloribus debitis non ad saepe nemo quae eos deleniti. Ab, quaerat?</p>
-                </div>
+            <div class="container xl:max-w-6xl mx-auto px-4">
+                <!-- Heading -->
+                <header class="text-center mx-auto mb-12 lg:px-20">
+                    <h2 class="text-2xl leading-normal mb-2 font-bold text-black dark:text-white">Latest Land Postings</h2>
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 100 60" class="mx-auto h-9">
+                        <circle cx="50.1" cy="30.4" r="5" class="stroke-primary dark:stroke-gray-200" style="fill: transparent;stroke-width: 2;"></circle>
+                        <line x1="55.1" y1="30.4" x2="100" y2="30.4" class="stroke-primary dark:stroke-gray-200" style="stroke-width: 2;"></line>
+                        <line x1="45.1" y1="30.4" x2="0" y2="30.4" class="stroke-primary dark:stroke-gray-200" style="stroke-width: 2;"></line>
+                    </svg>
+                    <p class="text-gray-500 dark:text-gray-400 leading-relaxed font-light text-xl mx-auto pb-2">
+                        Explore our latest land postings available for sale or lease.
+                    </p>
+                </header>
             </div>
+            <div class="flex flex-wrap flex-row">
+                @php
+                $sortedListings = $landListings->sortByDesc('created_at');
+                @endphp
+                @forelse($sortedListings as $listing)
+                @if($listing->status === 'approved')
+                <figure class="flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/4 group wow fadeInUp mb-8" data-wow-duration="1s">
+                    <div class="relative overflow-hidden cursor-pointer mb-6">
+                        <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}"
+                            data-gallery="gallery1"
+                            data-title="Land Owner: {{ $listing->landowner_name }} <br> Location: {{ $listing->location }}"
+                            data-description="
+            Price: {{ $listing->price }} Php <br> 
+            Size: {{ $listing->size }} <br> 
+            Soil Quality: {{ $listing->soil_quality }} <br> 
+            Land Condition: {{ $listing->land_condition }} <br> 
+            Phone: {{ $listing->phone_number }} <br> 
+            Description: {{ $listing->description }} <br> 
+            <div class='flex space-x-3 mt-4'>
+                <a href='#' class='rent-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center' data-id='{{ $listing->id }}'>
+                    <i class='fas fa-shopping-cart mr-2'></i> Rent Now
+                </a>
+
+                <a href='tel:{{ $listing->phone_number }}' class='bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                    <i class='fas fa-phone-alt mr-2'></i> Call Owner
+                </a>
+
+                <a href='https://www.google.com/maps/search/?api=1&query={{ urlencode($listing->location) }}' target='_blank' class='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                    <i class='fas fa-map-marker-alt mr-2'></i> View on Maps
+                </a>
+                
+            </div>
+        "
+                            class="glightbox3">
+
+                            <img class="block w-full h-auto transform duration-500" src="{{ asset('storage/land_images/' . basename($listing->image)) }}" alt="Land Image">
+                            <div class="absolute inset-x-0 bottom-0 h-20 transition-opacity duration-500 ease-in opacity-0 group-hover:opacity-100 overflow-hidden px-4 py-2 text-gray-100 dark:text-gray-900 bg-black dark:bg-gray-200 text-center">
+                                <h3 class="text-base leading-normal font-semibold my-1 text-white dark:text-gray-900">{{ $listing->landowner_name }}</h3>
+                                <small class="d-block">Posted {{ $listing->created_at->diffForHumans() }}</small>
+                            </div>
+                        </a>
+                    </div>
+                    <h3 class="text-base leading-normal font-semibold my-1 text-gray-900 dark:text-white">{{ $listing->landowner_name }}</h3>
+                    <small class="d-block text-gray-600 dark:text-gray-400">Location: {{ $listing->location }}</small><br>
+                    <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} Php</small>
+                    <small class="d-block text-gray-600 dark:text-gray-400"> <br>
+                        Status: <strong class="text-green-600">{{ optional($listing->transaction)->status ?? 'Not Available' }}</strong>
+                    </small>
+                    <!--       <div class='map-container' data-location='{{ $listing->location }}' style='height: 100%; width: 200%; margin-top: 20px;'></div> -->
+                </figure>
+                @endif
+                @empty
+                <p class="text-gray-500 dark:text-gray-400">No approved land postings available.</p>
+                @endforelse
+            </div>
+            <!-- Scripts -->
+            <script src="{{ asset('src/vendors/glightbox/dist/js/glightbox.min.js') }}"></script>
+            <script src="{{ asset('src/vendors/@splidejs/splide/dist/js/splide.min.js') }}"></script>
+            <script src="{{ asset('src/vendors/typed.js/lib/typed.min.js') }}"></script>
+            <script src="{{ asset('src/vendors/wow.js/dist/wow.min.js') }}"></script>
+            <script src="{{ asset('src/vendors/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+            <script src="{{ asset('src/js/theme.js') }}"></script>
         </div>
+        <script>
+            document.addEventListener("click", function(event) {
+                if (event.target.classList.contains("rent-btn")) {
+                    event.preventDefault();
+                    let listingId = event.target.getAttribute("data-id");
+                    alert("Request to rent listing ID: " + listingId);
+                }
+            });
+        </script>
+        <script
+            async
+            defer
+            src="https://maps.gomaps.pro/maps/api/js?key={{ env('MAP_KEY') }}&libraries=geometry,places&callback=initMap"></script>
+        <script>
+            function initMap() {
+                document.querySelectorAll(".map-container").forEach(function(mapElement) {
+                    let location = mapElement.getAttribute("data-location");
+
+                    let geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({
+                        address: location
+                    }, function(results, status) {
+                        if (status === "OK") {
+                            let map = new google.maps.Map(mapElement, {
+                                center: results[0].geometry.location,
+                                zoom: 12,
+                            });
+
+                            new google.maps.Marker({
+                                position: results[0].geometry.location,
+                                map: map,
+                                title: location,
+                            });
+                        } else {
+                            console.error("Geocode failed: " + status);
+                        }
+                    });
+                });
+            }
+        </script>
+
+
 </x-app-layout>

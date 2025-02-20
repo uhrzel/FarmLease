@@ -6,6 +6,8 @@ use App\Models\LandListing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use App\Models\Transaction;
 
 
 class LandListingController extends Controller
@@ -101,14 +103,36 @@ class LandListingController extends Controller
         ]);
     }
 
-    public function approve($id) //admin approval
+    public function approve($id)
     {
         $listing = LandListing::findOrFail($id);
         $listing->status = 'approved';
         $listing->approved_by = Auth::id();
         $listing->save();
 
-        return response()->json(['message' => 'Listing approved']);
+        $listing = LandListing::find($id);
+
+        if (!$listing || !$listing->landowner_id) {
+            Log::error("Transaction Error: Listing ID {$id} has no associated user.");
+            return back()->with('error', 'Transaction failed due to missing landowner.');
+        }
+
+        $transaction = Transaction::firstOrCreate(
+            ['land_listing_id' => $id],
+            ['user_id' => $listing->landowner_id, 'status' => 'available']
+        );
+        if (!$transaction->wasRecentlyCreated) {
+            $transaction->update(['status' => 'available']);
+            Log::info("Transaction Updated: Listing ID {$id}, Transaction ID {$transaction->id}, Status set to 'available'.");
+        } else {
+            Log::info("Transaction Created: Listing ID {$id}, Transaction ID {$transaction->id}, Status set to 'available'.");
+        }
+
+        if (!$transaction) {
+            Log::error("Transaction Failed: Could not create transaction for Listing ID {$id}.");
+        }
+
+        return response()->json(['message' => 'Listing approved, transaction status set to available']);
     }
 
     public function decline($id) //admin decline
@@ -123,7 +147,25 @@ class LandListingController extends Controller
 
     public function tenant() //tenant only
     {
-        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+        $landListings = LandListing::where('status', 'approved')
+            ->whereHas('transaction', function ($query) {
+                $query->where('status', 'available');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('users.tenant.home', compact('landListings'));
+    }
+
+    public function lessee() //lessee only
+    {
+        $landListings = LandListing::where('status', 'approved')
+            ->whereHas('transaction', function ($query) {
+                $query->where('status', 'available');
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('users.tenant.home', compact('landListings'));
     }
 }

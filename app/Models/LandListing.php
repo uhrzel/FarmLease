@@ -32,4 +32,8 @@ class LandListing extends Model
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'land_listing_id');
+    }
 }

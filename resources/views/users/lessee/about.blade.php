@@ -1,18 +1,70 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('About') }}
+            {{ __('About Us') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">Welcome to the Lessee About us: {{ Auth::user()->username }}</h1><span></span>
-                    <p class="text-gray-700 dark:text-gray-300">This is a secure area of the application. Only authorized users can view this page.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam placeat, quas nulla suscipit nesciunt eveniet doloribus pariatur distinctio. Excepturi nisi perferendis voluptatibus ratione error velit voluptates aperiam, sunt repellat officia facilis pariatur quae natus nam harum similique nulla animi delectus cumque laudantium fuga nihil reprehenderit! Maiores earum neque reprehenderit repellendus, ducimus tempore, doloribus sint exercitationem delectus, rem optio? Vel dignissimos similique culpa quibusdam voluptates laudantium ratione beatae alias. Est quis animi maxime dolorem illum sapiente consequatur, delectus eius aut obcaecati odit laboriosam nemo accusantium nisi ea exercitationem reiciendis consectetur iste illo. Nihil natus libero provident doloribus temporibus? Ad minima culpa iusto, ipsa suscipit sequi repudiandae ut reiciendis repellat, tenetur quo perferendis. Assumenda consequatur officia molestias possimus vitae incidunt ea ducimus cupiditate, consequuntur optio porro deserunt eligendi perspiciatis minima dolore praesentium! Omnis fugit vitae amet veniam incidunt explicabo non. Eaque distinctio corrupti omnis reprehenderit consequatur maiores, soluta assumenda magnam illo amet ea veniam earum aliquid qui ipsum fugit quae. Id, itaque quibusdam. Officiis, nam. Praesentium officia perspiciatis magnam sunt nam quaerat delectus illo rerum deleniti minus, provident ipsum, voluptatibus mollitia esse sint veniam, quod blanditiis et libero. Officia aspernatur minima voluptate perferendis mollitia rem fugiat ratione. Odit quibusdam tempora perferendis tempore recusandae exercitationem praesentium vitae ad fugit aliquid ratione beatae eaque nam, voluptate quos animi in incidunt pariatur deserunt quas deleniti veritatis. Minus, cumque necessitatibus deserunt atque vel eveniet laborum harum reprehenderit, vero blanditiis mollitia expedita, debitis commodi. Officiis fugiat mollitia ab veniam temporibus omnis ad, incidunt inventore nulla nesciunt veritatis magni nisi placeat totam consequatur libero consectetur quo cumque quis. Repellat sunt excepturi explicabo repudiandae. Voluptate atque quisquam, obcaecati inventore dolore rerum velit nostrum iusto, nobis architecto excepturi, eos explicabo ipsum laudantium facere culpa laboriosam. Alias perferendis enim illum explicabo, voluptatem voluptates non aut tenetur assumenda libero saepe architecto quibusdam hic dolorem molestias delectus distinctio veritatis quis expedita fuga. Facere, tempore illo, aut, architecto sequi incidunt dicta quidem laboriosam expedita assumenda eos enim quam nisi dolorem voluptates nulla nobis laudantium non voluptas dolores modi ea dolor. Nihil tempora assumenda aut quos impedit facilis esse laborum delectus, nam ipsa adipisci soluta incidunt voluptates vitae vero quas ex similique repellendus repellat perspiciatis mollitia consectetur excepturi! Cum tempora eligendi odit consectetur molestias corporis debitis deleniti voluptatem quaerat. Reprehenderit odit dolores, praesentium illum numquam aliquam soluta eveniet quia magnam placeat sequi accusantium adipisci repellendus nisi accusamus ipsam quisquam in blanditiis ex tempore consectetur dolor. Quam qui autem molestiae accusamus rerum odio voluptatum fugiat incidunt! Perferendis reiciendis, ratione deserunt provident accusantium quidem voluptates aperiam. Et atque optio rem! Tempore, numquam deserunt! Quasi velit molestiae reprehenderit! Ab sequi aperiam modi sunt perferendis eos ratione magni voluptatibus ex, harum doloremque voluptates ea accusantium. Earum temporibus debitis dolore rerum, mollitia odit a totam libero commodi nulla. Doloribus vero facere dolorem, officia porro tempore dicta ipsum maxime quidem illo, ad assumenda aut, quisquam qui! Voluptates, ipsam nemo! Neque at deserunt accusantium odit, aut nulla, sint autem nesciunt doloribus debitis non ad saepe nemo quae eos deleniti. Ab, quaerat?</p>
+    <div class="">
+        <div class="">
+            <div class="relative w-full">
+                <img class="w-full h-[600px] object-cover" src="{{ asset('assets/images/cover.png') }}" alt="Cover Image">
+                <div class="absolute inset-0 flex justify-center items-center">
+                    <img class="w-60 h-50 p-2 rounded-full " src="{{ asset('assets/images/logo1.png') }}" alt="Logo">
                 </div>
             </div>
+            <div class="text-center my-8">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 uppercase">Exploring Lands</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div>
+                    <img class="w-full h-60 object-cover rounded-lg shadow-lg" src="{{ asset('assets/images/about1.jpeg') }}" alt="About Image 1">
+
+                </div>
+                <div>
+                    <img class="w-full h-60 object-cover rounded-lg shadow-lg" src="{{ asset('assets/images/about2.jpeg') }}" alt="About Image 2">
+                </div>
+                <div>
+                    <img class="w-full h-60 object-cover rounded-lg shadow-lg" src="{{ asset('assets/images/about3.jpg') }}" alt="About Image 3">
+                </div>
+            </div>
+
+            <!-- Description Paragraph -->
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                    This site is your trusted guide for finding agricultural land and connecting with landowners.
+                    Whether you’re a farmer looking to lease land or a landowner seeking tenants, the platform simplifies
+                    the entire process, making it convenient and efficient. With detailed land listings, secure communication tools,
+                    and transparent lease terms, we aim to remove the traditional hurdles in land leasing and create a more streamlined experience for all users.
+                </p>
+                <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mt-4">
+                    Our user-friendly interface ensures that completing transactions is quick and hassle-free.
+                    The forms are designed to be intuitive, reducing the time and effort required to finalize agreements.
+                    From browsing available land to signing a lease, the platform integrates all the necessary steps into a smooth
+                    and accessible process, enabling you to focus on what matters most—making the land work for you.
+                </p>
+            </div>
+            <div class="text-center mt-10">
+                <h3 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Contact Us</h3>
+                <p class="text-gray-600 dark:text-gray-300">For more inquiries</p>
+                <div class="flex justify-center gap-6 mt-4">
+                    <a href="#" class="w-16 h-16">
+                        <img src="{{ asset('assets/images/fb.png') }}" alt="Facebook" class="w-16 h-16 object-contain">
+                    </a>
+                    <a href="#" class="w-16 h-16">
+                        <img src="{{ asset('assets/images/ig.png') }}" alt="Phone" class="w-16 h-16 object-contain">
+                    </a>
+                    <a href="#" class="w-16 h-16">
+                        <img src="{{ asset('assets/images/gmail.png') }}" alt="Email" class="w-16 h-16 object-contain">
+                    </a>
+                    <a href="#" class="w-16 h-16">
+                        <img src="{{ asset('assets/images/phone.png') }}" alt="Phone" class="w-16 h-16 object-contain">
+                    </a>
+
+                </div>
+            </div>
+
+
         </div>
+    </div>
 </x-app-layout>

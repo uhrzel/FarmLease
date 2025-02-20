@@ -21,6 +21,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return app(\App\Http\Controllers\LandListingController::class)->admin();
         } else if ($role === 'tenant') {
             return app(\App\Http\Controllers\LandListingController::class)->tenant();
+        } else if ($role === 'lessee') {
+            return app(\App\Http\Controllers\LandListingController::class)->lessee();
         }
         return view("users.$role.home");
     })->name('home');

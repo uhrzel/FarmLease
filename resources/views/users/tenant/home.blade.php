@@ -40,29 +40,30 @@
                         <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}"
                             data-gallery="gallery1"
                             data-title="Land Owner: {{ $listing->landowner_name }} <br> Location: {{ $listing->location }}"
-                            data-description="Price: {{ $listing->price }} Php <br> Size: {{ $listing->size }} <br> Soil Quality: {{ $listing->soil_quality }} <br> Land Condition: {{ $listing->land_condition }} <br> Phone: {{ $listing->phone_number }} <br> Description: {{ $listing->description }} 
-                            <br>
-                           <div class='flex space-x-3 mt-4'>
-                            <a href='#'
-                                class='rent-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'
-                                data-id='{{ $listing->id }}'>
-                                <i class='fas fa-shopping-cart mr-2'></i> Rent Now
-                            </a>
+                            data-description="
+            Price: {{ $listing->price }} Php <br> 
+            Size: {{ $listing->size }} <br> 
+            Soil Quality: {{ $listing->soil_quality }} <br> 
+            Land Condition: {{ $listing->land_condition }} <br> 
+            Phone: {{ $listing->phone_number }} <br> 
+            Description: {{ $listing->description }} <br> 
+            <div class='flex space-x-3 mt-4'>
+                <a href='#' class='rent-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center' data-id='{{ $listing->id }}'>
+                    <i class='fas fa-shopping-cart mr-2'></i> Rent Now
+                </a>
 
-                            <a href='tel:{{ $listing->phone_number }}'
-                                class='bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
-                                <i class='fas fa-phone-alt mr-2'></i> Call Owner
-                            </a>
+                <a href='tel:{{ $listing->phone_number }}' class='bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                    <i class='fas fa-phone-alt mr-2'></i> Call Owner
+                </a>
 
-                            <a href='https://www.google.com/maps/search/?api=1&query={{ urlencode($listing->location) }}'
-                                target='_blank'
-                                class='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
-                                <i class='fas fa-map-marker-alt mr-2'></i> View on Maps
-                            </a>
-                    </div>
-
-                    "
+                <a href='https://www.google.com/maps/search/?api=1&query={{ urlencode($listing->location) }}' target='_blank' class='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                    <i class='fas fa-map-marker-alt mr-2'></i> View on Maps
+                </a>
+                
+            </div>
+        "
                             class="glightbox3">
+
                             <img class="block w-full h-auto transform duration-500" src="{{ asset('storage/land_images/' . basename($listing->image)) }}" alt="Land Image">
                             <div class="absolute inset-x-0 bottom-0 h-20 transition-opacity duration-500 ease-in opacity-0 group-hover:opacity-100 overflow-hidden px-4 py-2 text-gray-100 dark:text-gray-900 bg-black dark:bg-gray-200 text-center">
                                 <h3 class="text-base leading-normal font-semibold my-1 text-white dark:text-gray-900">{{ $listing->landowner_name }}</h3>
@@ -73,6 +74,9 @@
                     <h3 class="text-base leading-normal font-semibold my-1 text-gray-900 dark:text-white">{{ $listing->landowner_name }}</h3>
                     <small class="d-block text-gray-600 dark:text-gray-400">Location: {{ $listing->location }}</small><br>
                     <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} Php</small>
+                    <small class="d-block text-gray-600 dark:text-gray-400"> <br>
+                        Status: <strong class="text-green-600">{{ optional($listing->transaction)->status ?? 'Not Available' }}</strong>
+                    </small>
                     <!--       <div class='map-container' data-location='{{ $listing->location }}' style='height: 100%; width: 200%; margin-top: 20px;'></div> -->
                 </figure>
                 @endif
