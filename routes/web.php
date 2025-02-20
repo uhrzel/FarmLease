@@ -19,6 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             return view('users.landowner.home');
         } else if ($role === 'admin') {
             return app(\App\Http\Controllers\LandListingController::class)->admin();
+        } else if ($role === 'tenant') {
+            return app(\App\Http\Controllers\LandListingController::class)->tenant();
         }
         return view("users.$role.home");
     })->name('home');
@@ -61,6 +63,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/landlistings/{id}', [LandListingController::class, 'show']);
     Route::post('/landlistings/{id}/approve', [LandListingController::class, 'approve']);
     Route::post('/landlistings/{id}/decline', [LandListingController::class, 'decline']);
+
+    // Route for Tenant
+    /*    Route::get('/admin/land-listings', [LandListingController::class, 'admin'])
+        ->name('admin.landlistings')
+        ->middleware('auth'); */
 });
 
 // Profile Routes

@@ -120,4 +120,10 @@ class LandListingController extends Controller
 
         return response()->json(['message' => 'Listing declined']);
     }
+
+    public function tenant() //tenant only
+    {
+        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+        return view('users.tenant.home', compact('landListings'));
+    }
 }
