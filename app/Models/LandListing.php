@@ -9,7 +9,6 @@ class LandListing extends Model
 {
     use HasFactory;
 
-    // Fillable attributes for mass assignment
     protected $fillable = [
         'landowner_name',
         'location',
@@ -20,10 +19,8 @@ class LandListing extends Model
         'land_condition',
         'description',
         'image',
-        'landowner_id', // This will reference the user creating the listing
+        'landowner_id', 
     ];
-
-    // Define the relationship to User (landowner)
     public function user()
     {
         return $this->belongsTo(User::class, 'landowner_id');
