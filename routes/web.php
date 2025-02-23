@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LandListingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RentController;
+use App\Http\Controllers\CartController;
 
 // Public Routes
 Route::get('/', fn() => view('welcome'));
@@ -70,6 +72,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /*    Route::get('/admin/land-listings', [LandListingController::class, 'admin'])
         ->name('admin.landlistings')
         ->middleware('auth'); */
+
+
+    /* Rent now */
+
+    Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
 });
 
 // Profile Routes

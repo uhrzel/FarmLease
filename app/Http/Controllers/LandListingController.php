@@ -145,17 +145,19 @@ class LandListingController extends Controller
         return response()->json(['message' => 'Listing declined']);
     }
 
-    public function tenant() //tenant only
+    public function tenant()
     {
         $landListings = LandListing::where('status', 'approved')
             ->whereHas('transaction', function ($query) {
                 $query->where('status', 'available');
             })
+            ->with('transaction') // Ensure the transaction relationship is loaded
             ->orderBy('created_at', 'desc')
             ->get();
 
         return view('users.tenant.home', compact('landListings'));
     }
+
 
     public function lessee() //lessee only
     {
