@@ -467,6 +467,9 @@
             <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
                 <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+                <i class="fas fa-shopping-cart mr-2"></i> {{ __('Cart') }}
+            </x-responsive-nav-link>
             <!-- lessee -->
             @elseif(auth()->user()->role === 'lessee')
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">

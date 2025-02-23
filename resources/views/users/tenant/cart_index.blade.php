@@ -10,17 +10,14 @@
         <div class="shadow-lg rounded-lg border p-6 w-2/3 relative 
             bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700">
 
-            <!-- Remaining Balance -->
             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200">REMAINING BALANCE</h3>
             <div class="mt-3 p-4 text-lg font-bold bg-gray-100 dark:bg-gray-700 border border-gray-400 dark:border-gray-600 text-gray-800 dark:text-gray-200 rounded-xl w-1/2">
                 ₱{{ number_format($cart->total_payment, 2) }}
             </div>
 
             <div class="flex items-center mt-6">
-                <!-- Profile Image -->
                 <img src="{{ asset('storage/'.$cart->landListing->owner->identity_recognition) }}" alt="Profile Image" class="w-20 h-20 rounded-full border border-gray-300 dark:border-gray-600 shadow-lg">
 
-                <!-- User Details -->
                 <div class="ml-4">
                     <h4 class="text-xl font-bold text-gray-800 dark:text-gray-200">
                         {{ $cart->landListing->owner->firstname ?? 'N/A' }} {{ $cart->landListing->owner->lastname ?? '' }}
@@ -32,13 +29,10 @@
             </div>
 
             <hr class="my-4 border-gray-300 dark:border-gray-600">
-
-            <!-- Rental Land Location -->
             <p class="text-gray-700 dark:text-gray-300 font-medium">
                 Rental Land: {{ $cart->landListing->location ?? 'N/A' }}
             </p>
 
-            <!-- Pay Now Button -->
             <div class="mt-6">
                 <button
                     class="bg-lime-400 text-black dark:bg-lime-500 dark:text-white font-bold px-6 py-2 rounded-lg shadow-lg hover:bg-lime-500 dark:hover:bg-lime-600"
@@ -53,8 +47,9 @@
             <form method="POST" action="{{ route('payment.process', $cart->id) }}" enctype="multipart/form-data">
                 @csrf
                 <div class="mt-4 text-left text-xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-                    TOTAL COST: ₱<span id="calculated-cost" name="calculated-cost">{{ number_format($cart->total_payment, 2) }}</span>
+                    TOTAL COST: ₱<span id="calculated-cost-{{ $cart->id }}" name="calculated-cost">{{ number_format($cart->total_payment, 2) }}</span>
                 </div>
+                <input type="hidden" id="total-payment-{{ $cart->id }}" name="total_payment" value="{{ $cart->total_payment }}">
                 <div class="grid grid-cols-4 gap-4">
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
                         <img src="{{ asset('assets/images/paypal.png') }}" class="w-16 h-16" alt="PayPal">
@@ -78,29 +73,28 @@
                 </div>
 
                 <div class="mt-6 flex justify-center space-x-4">
-                    <label for="monthly-btn" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
-                        <input id="monthly-btn" type="radio" name="plan" value="Monthly" class="hidden">
+                    <label for="monthly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
+                        <input id="monthly-btn-{{ $cart->id }}" type="radio" name="plan" value="Monthly" class="hidden">
                         Monthly
                     </label>
 
-                    <label for="yearly-btn" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
-                        <input id="yearly-btn" type="radio" name="plan" value="Yearly" class="hidden">
+                    <label for="yearly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
+                        <input id="yearly-btn-{{ $cart->id }}" type="radio" name="plan" value="Yearly" class="hidden">
                         Yearly
                     </label>
                 </div>
 
-
                 <!-- Monthly/Yearly Dropdowns -->
-                <div class="mt-6 hidden" id="monthly-options">
+                <div class="mt-6 hidden" id="monthly-options-{{ $cart->id }}">
                     <label class="block text-lg font-semibold text-gray-900 dark:text-gray-200">📆 Select Month Range</label>
                     <div class="flex space-x-4 mt-3">
-                        <select id="start-month" name="start-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
+                        <select id="start-month-{{ $cart->id }}" name="start-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>Start Month</option>
                             @foreach (range(1, 12) as $month)
                             <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 1)) }}</option>
                             @endforeach
                         </select>
-                        <select id="end-month" name="end-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
+                        <select id="end-month-{{ $cart->id }}" name="end-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>End Month</option>
                             @foreach (range(1, 12) as $month)
                             <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 1)) }}</option>
@@ -109,16 +103,16 @@
                     </div>
                 </div>
 
-                <div class="mt-6 hidden" id="yearly-options">
+                <div class="mt-6 hidden" id="yearly-options-{{ $cart->id }}">
                     <label class="block text-lg font-semibold text-gray-900 dark:text-gray-200">📅 Select Year Range</label>
                     <div class="flex space-x-4 mt-3">
-                        <select id="start-year" name="start-year" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
+                        <select id="start-year-{{ $cart->id }}" name="start-year" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>Start Year</option>
                             @for ($year = date('Y'); $year <= date('Y') + 5; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
                                 @endfor
                         </select>
-                        <select id="end-year" name="end-year" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
+                        <select id="end-year-{{ $cart->id }}" name="end-year" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>End Year</option>
                             @for ($year = date('Y'); $year <= date('Y') + 5; $year++)
                                 <option value="{{ $year }}">{{ $year }}</option>
@@ -140,53 +134,73 @@
 
             </form>
         </x-modal>
-
         <script>
             document.addEventListener("DOMContentLoaded", function() {
-                let monthlyBtn = document.getElementById("monthly-btn");
-                let yearlyBtn = document.getElementById("yearly-btn");
-                let monthlyOptions = document.getElementById("monthly-options");
-                let yearlyOptions = document.getElementById("yearly-options");
-                let calculatedCost = document.getElementById("calculated-cost");
-                let startMonth = document.getElementById("start-month");
-                let endMonth = document.getElementById("end-month");
-                let startYear = document.getElementById("start-year");
-                let endYear = document.getElementById("end-year");
+                let cartId = "{{ $cart->id }}";
 
-                let baseCost = '{{$cart->total_payment}}';
+                let monthlyBtn = document.getElementById(`monthly-btn-${cartId}`);
+                let yearlyBtn = document.getElementById(`yearly-btn-${cartId}`);
+                let monthlyOptions = document.getElementById(`monthly-options-${cartId}`);
+                let yearlyOptions = document.getElementById(`yearly-options-${cartId}`);
+                let calculatedCost = document.getElementById(`calculated-cost-${cartId}`);
+                let startMonth = document.getElementById(`start-month-${cartId}`);
+                let endMonth = document.getElementById(`end-month-${cartId}`);
+                let startYear = document.getElementById(`start-year-${cartId}`);
+                let endYear = document.getElementById(`end-year-${cartId}`);
+                let totalPaymentInput = document.getElementById(`total-payment-${cartId}`);
+                let baseCost = parseFloat("{{ $cart->total_payment }}") || 0;
+                if (monthlyBtn && yearlyBtn) {
+                    monthlyBtn.addEventListener("click", function() {
+                        monthlyOptions.classList.remove("hidden");
+                        yearlyOptions.classList.add("hidden");
+                    });
 
-                monthlyBtn.addEventListener("click", function() {
-                    monthlyOptions.classList.remove("hidden");
-                    yearlyOptions.classList.add("hidden");
-                });
-                yearlyBtn.addEventListener("click", function() {
-                    yearlyOptions.classList.remove("hidden");
-                    monthlyOptions.classList.add("hidden");
-                });
+                    yearlyBtn.addEventListener("click", function() {
+                        yearlyOptions.classList.remove("hidden");
+                        monthlyOptions.classList.add("hidden");
+                    });
+                }
 
                 function updateMonthlyCost() {
-                    let start = parseInt(startMonth.value);
-                    let end = parseInt(endMonth.value);
+                    let start = parseInt(startMonth.value) || 0;
+                    let end = parseInt(endMonth.value) || 0;
+
+                    console.log("Start Month:", start);
+                    console.log("End Month:", end);
+
                     if (start && end && end >= start) {
                         let months = end - start + 1;
-                        calculatedCost.innerText = (baseCost * months).toFixed(2);
+                        cost = baseCost * months;
+                        calculatedCost.innerText = cost.toFixed(2);
+                        totalPaymentInput.value = cost;
                     }
                 }
-
-                startMonth.addEventListener("change", updateMonthlyCost);
-                endMonth.addEventListener("change", updateMonthlyCost);
 
                 function updateYearlyCost() {
-                    let start = parseInt(startYear.value);
-                    let end = parseInt(endYear.value);
+                    let start = parseInt(startYear.value) || 0;
+                    let end = parseInt(endYear.value) || 0;
+
+                    console.log("Start Year:", start);
+                    console.log("End Year:", end);
+
                     if (start && end && end >= start) {
                         let years = end - start + 1;
-                        calculatedCost.innerText = (baseCost * years * 12).toFixed(2);
+                        cost = baseCost * years * 12;
+                        calculatedCost.innerText = cost.toFixed(2);
+                        totalPaymentInput.value = cost;
                     }
+
                 }
 
-                startYear.addEventListener("change", updateYearlyCost);
-                endYear.addEventListener("change", updateYearlyCost);
+                if (startMonth && endMonth) {
+                    startMonth.addEventListener("change", updateMonthlyCost);
+                    endMonth.addEventListener("change", updateMonthlyCost);
+                }
+
+                if (startYear && endYear) {
+                    startYear.addEventListener("change", updateYearlyCost);
+                    endYear.addEventListener("change", updateYearlyCost);
+                }
             });
         </script>
 

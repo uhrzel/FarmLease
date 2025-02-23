@@ -14,7 +14,6 @@ class Cart extends Model
         'land_listing_id',
         'transaction_id',
         'total_payment',
-        'total_payment',
         'payment_option',
         'plan',
         'reference_image',
