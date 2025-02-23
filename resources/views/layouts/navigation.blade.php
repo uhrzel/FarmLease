@@ -182,7 +182,12 @@
                         </x-dropdown-link>
 
                         <hr class="border-gray-200 dark:border-gray-600">
+                        <x-dropdown-link :href="route('cart.index')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-shopping-cart text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Cart') }}</span>
+                        </x-dropdown-link>
 
+                        <hr class="border-gray-200 dark:border-gray-600">
                         <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

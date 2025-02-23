@@ -9,7 +9,17 @@ class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'land_listing_id', 'transaction_id', 'total_payment', 'status'];
+    protected $fillable = [
+        'user_id',
+        'land_listing_id',
+        'transaction_id',
+        'total_payment',
+        'total_payment',
+        'payment_option',
+        'plan',
+        'reference_image',
+        'status'
+    ];
 
     public function user()
     {
@@ -18,8 +28,9 @@ class Cart extends Model
 
     public function landListing()
     {
-        return $this->belongsTo(LandListing::class);
+        return $this->belongsTo(LandListing::class, 'land_listing_id');
     }
+
 
     public function transaction()
     {

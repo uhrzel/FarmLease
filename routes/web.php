@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
 
 // Public Routes
 Route::get('/', fn() => view('welcome'));
@@ -77,6 +78,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     /* Rent now */
 
     Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    //PAYMENT
+    Route::post('/payment/process/{cart}', [PaymentController::class, 'processPayment'])->name('payment.process');
 });
 
 // Profile Routes

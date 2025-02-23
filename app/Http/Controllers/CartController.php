@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\LandListing;
-use App\Models\Transaction; // Import Transaction Model
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -48,5 +48,14 @@ class CartController extends Controller
 
             return response()->json(['message' => 'An error occurred while adding to cart.'], 500);
         }
+    }
+    public function index()
+    {
+        $carts = Cart::with(['landListing.owner'])
+            ->where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->get();
+
+        return view('users.tenant.cart_index', compact('carts'));
     }
 }

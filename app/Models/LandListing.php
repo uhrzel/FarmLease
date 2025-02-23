@@ -19,7 +19,7 @@ class LandListing extends Model
         'land_condition',
         'description',
         'image',
-        'landowner_id', 
+        'landowner_id',
     ];
     public function user()
     {
@@ -32,5 +32,9 @@ class LandListing extends Model
     public function transaction()
     {
         return $this->hasOne(Transaction::class, 'land_listing_id');
+    }
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'landowner_id');
     }
 }
