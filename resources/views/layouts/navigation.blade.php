@@ -105,7 +105,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-1">
                 @auth
-                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Dropdown -->
                 <x-dropdown align="right" width="80">
                     <x-slot name="trigger">
@@ -130,6 +130,51 @@
                         <!-- content ng land -->
                     </div>
                 </x-modal>
+                @endif
+                @endauth
+                @auth
+                @if(auth()->user()->role === 'tenant')
+                <!-- Notification Dropdown -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtnTenant"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationTenantCount"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id=notificationPaymentTenant" class="p-3 w-80 max-h-96 overflow-y-auto">
+                            <p class="text-gray-500 dark:text-gray-400">No new notification Tenant</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
+
+                @endif
+                @endauth
+                @auth
+                @if(auth()->user()->role === 'lessee')
+                <!-- Notification Dropdown -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtnLessee"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationLesseeCount"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id=notificationPaymentLessee" class="p-3 w-80 max-h-96 overflow-y-auto">
+                            <p class="text-gray-500 dark:text-gray-400">No new notification for Lessee</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
 
                 @endif
                 @endauth
@@ -182,7 +227,7 @@
                         </x-dropdown-link>
 
                         <hr class="border-gray-200 dark:border-gray-600">
-                        <x-dropdown-link :href="route('cart.index')" class="flex items-center px-4 py-2">
+                        <x-dropdown-link :href="route('cart.tenant.index')" class="flex items-center px-4 py-2">
                             <i class="fas fa-shopping-cart text-gray-600 dark:text-gray-300 mr-2"></i>
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Cart') }}</span>
                         </x-dropdown-link>
@@ -235,6 +280,11 @@
                             <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Profile') }}</span>
                         </x-dropdown-link>
 
+                        <hr class="border-gray-200 dark:border-gray-600">
+                        <x-dropdown-link :href="route('cart.lessee.index')" class="flex items-center px-4 py-2">
+                            <i class="fas fa-shopping-cart text-gray-600 dark:text-gray-300 mr-2"></i>
+                            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Cart') }}</span>
+                        </x-dropdown-link>
                         <hr class="border-gray-200 dark:border-gray-600">
 
                         <!-- Logout -->
@@ -395,7 +445,7 @@
             </div>
             <div class="-me-2 flex items-center sm:hidden gap-4">
                 @auth
-                @if(auth()->user()->role === 'tenant' || auth()->user()->role === 'lessee' || auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
                 <!-- Notification Button -->
                 <x-dropdown align="right" width="80">
                     <x-slot name="trigger">
@@ -425,7 +475,60 @@
                         <!-- content ng land -->
                     </div>
                 </x-modal>
+                @endif
+                @endauth
 
+                @auth
+                @if(auth()->user()->role === 'tenant')
+                <!-- Notification Button -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtnTenantRes"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationTenantCountRes"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id="notificationPaymentTenantRes"
+                            class="p-3 max-h-96 overflow-y-auto 
+                w-64 sm:w-72 md:w-80 lg:w-96 
+                max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg 
+                bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No new Notification for Tenant.</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
+                @endif
+                @endauth
+
+                @auth
+                @if(auth()->user()->role === 'lessee')
+                <!-- Notification Button -->
+                <x-dropdown align="right" width="80">
+                    <x-slot name="trigger">
+                        <button type="button" id="notificationBtnLesseeRes"
+                            class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span id="notificationLesseeCountRes"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                0
+                            </span>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <div id="notificationPaymentLesseeRes"
+                            class="p-3 max-h-96 overflow-y-auto 
+                w-64 sm:w-72 md:w-80 lg:w-96 
+                max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg 
+                bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+                            <p class="text-gray-500 dark:text-gray-400">No new Notification for Lessee.</p>
+                        </div>
+                    </x-slot>
+                </x-dropdown>
                 @endif
                 @endauth
 
@@ -467,7 +570,7 @@
             <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
                 <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
+            <x-responsive-nav-link :href="route('cart.tenant.index')" :active="request()->routeIs('cart.index')">
                 <i class="fas fa-shopping-cart mr-2"></i> {{ __('Cart') }}
             </x-responsive-nav-link>
             <!-- lessee -->
@@ -480,6 +583,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('faqs')" :active="request()->routeIs('faqs')">
                 <i class="fas fa-question-circle mr-2"></i> {{ __('FAQs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cart.lessee.index')" :active="request()->routeIs('cart.index')">
+                <i class="fas fa-shopping-cart mr-2"></i> {{ __('Cart') }}
             </x-responsive-nav-link>
             <!-- Landowner -->
             @elseif(auth()->user()->role === 'land_owner')

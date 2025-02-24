@@ -76,10 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     /* Rent now */
-
+    //Tenant Lessee Cart
+    Route::get('/tenant/cart', [CartController::class, 'index'])->name('cart.tenant.index');
+    Route::get('/lessee/cart', [CartController::class, 'lessee'])->name('cart.lessee.index');
     Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    //PAYMENT
     Route::post('/payment/process/{cart}', [PaymentController::class, 'processPayment'])->name('payment.process');
 });
 

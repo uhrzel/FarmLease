@@ -49,7 +49,7 @@ class CartController extends Controller
             return response()->json(['message' => 'An error occurred while adding to cart.'], 500);
         }
     }
-    public function index()
+    public function index() //tenant
     {
         $carts = Cart::with(['landListing.owner'])
             ->where('user_id', Auth::id())
@@ -57,5 +57,15 @@ class CartController extends Controller
             ->get();
 
         return view('users.tenant.cart_index', compact('carts'));
+    }
+
+    public function lessee() //lessee index
+    {
+        $carts = Cart::with(['landListing.owner'])
+            ->where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->get();
+
+        return view('users.lessee.cart_index', compact('carts'));
     }
 }
