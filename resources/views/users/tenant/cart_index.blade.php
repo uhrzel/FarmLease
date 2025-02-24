@@ -5,7 +5,51 @@
         </h2>
     </x-slot>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @if(session('success'))
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": 5000
+            };
+            toastr.success("{{ session('success') }}");
+        });
+    </script>
+    @endif
 
+    @if(session('warning'))
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": 5000
+            };
+            toastr.warning("{{ session('warning') }}");
+        });
+    </script>
+    @endif
+
+    @if ($errors->any())
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": 5000
+            };
+            @foreach($errors -> all() as $error)
+            toastr.error("{{ $error }}");
+            @endforeach
+        });
+    </script>
+    @endif
 
     <div class="container mx-auto p-6 flex flex-col items-center space-y-4 sm:space-y-6">
         @foreach ($carts as $cart)
@@ -45,19 +89,6 @@
 
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        @if(session('success'))
-        <script>
-            $(document).ready(function() {
-                toastr.options = {
-                    "closeButton": true,
-                    "progressBar": true
-                };
-                toastr.success("{{ session('success') }}");
-            });
-        </script>
-        @endif
         <x-modal name="pay-modal-{{ $cart->id }}">
             <form method="POST" action="{{ route('payment.process', $cart->id) }}" enctype="multipart/form-data">
                 @csrf
@@ -85,6 +116,11 @@
                         <img src="{{ asset('assets/images/grab.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="GrabPay">
                         <input type="radio" name="payment_option" value="GrabPay" class="mt-2">
                     </label>
+                </div>
+                <div class="mt-6">
+                    <label class="block text-lg font-semibold text-gray-900 dark:text-gray-200">💰 Downpayment</label>
+                    <input type="number" id="down_payment-{{ $cart->id }}" name="down_payment" placeholder="Enter downpayment amount"
+                        class="mt-2 w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-gray-50 dark:hover:bg-gray-800">
                 </div>
 
                 <div class="mt-6 flex justify-center space-x-4">
@@ -162,16 +198,20 @@
                 let startYear = document.getElementById(`start-year-${cartId}`);
                 let endYear = document.getElementById(`end-year-${cartId}`);
                 let totalPaymentInput = document.getElementById(`total-payment-${cartId}`);
+                let downpaymentInput = document.getElementById(`down_payment-${cartId}`);
                 let baseCost = parseFloat("{{ $cart->total_payment }}") || 0;
+
                 if (monthlyBtn && yearlyBtn) {
                     monthlyBtn.addEventListener("click", function() {
                         monthlyOptions.classList.remove("hidden");
                         yearlyOptions.classList.add("hidden");
+                        updateCalculatedCost();
                     });
 
                     yearlyBtn.addEventListener("click", function() {
                         yearlyOptions.classList.remove("hidden");
                         monthlyOptions.classList.add("hidden");
+                        updateCalculatedCost();
                     });
                 }
 
@@ -179,41 +219,48 @@
                     let start = parseInt(startMonth.value) || 0;
                     let end = parseInt(endMonth.value) || 0;
 
-                    console.log("Start Month:", start);
-                    console.log("End Month:", end);
-
                     if (start && end && end >= start) {
                         let months = end - start + 1;
-                        cost = baseCost * months;
-                        calculatedCost.innerText = cost.toFixed(2);
-                        totalPaymentInput.value = cost;
+                        return baseCost * months;
                     }
+                    return baseCost;
                 }
 
                 function updateYearlyCost() {
                     let start = parseInt(startYear.value) || 0;
                     let end = parseInt(endYear.value) || 0;
 
-                    console.log("Start Year:", start);
-                    console.log("End Year:", end);
-
                     if (start && end && end >= start) {
                         let years = end - start + 1;
-                        cost = baseCost * years * 12;
-                        calculatedCost.innerText = cost.toFixed(2);
-                        totalPaymentInput.value = cost;
+                        return baseCost * years * 12;
                     }
-
+                    return baseCost;
                 }
 
+                function updateCalculatedCost() {
+                    let cost = baseCost;
+                    let downpayment = parseFloat(downpaymentInput.value) || 0;
+
+                    if (monthlyBtn && monthlyBtn.checked) {
+                        cost = updateMonthlyCost();
+                    } else if (yearlyBtn && yearlyBtn.checked) {
+                        cost = updateYearlyCost();
+                    }
+                    let finalCost = cost - downpayment;
+                    if (finalCost < 0) finalCost = 0;
+                    calculatedCost.innerText = finalCost.toFixed(2);
+                    totalPaymentInput.value = finalCost;
+                }
+                if (downpaymentInput) {
+                    downpaymentInput.addEventListener("input", updateCalculatedCost);
+                }
                 if (startMonth && endMonth) {
-                    startMonth.addEventListener("change", updateMonthlyCost);
-                    endMonth.addEventListener("change", updateMonthlyCost);
+                    startMonth.addEventListener("change", updateCalculatedCost);
+                    endMonth.addEventListener("change", updateCalculatedCost);
                 }
-
                 if (startYear && endYear) {
-                    startYear.addEventListener("change", updateYearlyCost);
-                    endYear.addEventListener("change", updateYearlyCost);
+                    startYear.addEventListener("change", updateCalculatedCost);
+                    endYear.addEventListener("change", updateCalculatedCost);
                 }
             });
         </script>
