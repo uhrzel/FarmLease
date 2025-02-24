@@ -4,10 +4,12 @@
             {{ __('Renting List Page') }}
         </h2>
     </x-slot>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    <div class="container mx-auto p-6 flex flex-col items-center space-y-6">
+
+    <div class="container mx-auto p-6 flex flex-col items-center space-y-4 sm:space-y-6">
         @foreach ($carts as $cart)
-        <div class="shadow-lg rounded-lg border p-6 w-2/3 relative 
+        <div class="shadow-lg rounded-lg border p-6 w-full sm:w-2/3 relative 
             bg-white border-gray-300 dark:bg-gray-800 dark:border-gray-700">
 
             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200">REMAINING BALANCE</h3>
@@ -43,6 +45,19 @@
 
             </div>
         </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        @if(session('success'))
+        <script>
+            $(document).ready(function() {
+                toastr.options = {
+                    "closeButton": true,
+                    "progressBar": true
+                };
+                toastr.success("{{ session('success') }}");
+            });
+        </script>
+        @endif
         <x-modal name="pay-modal-{{ $cart->id }}">
             <form method="POST" action="{{ route('payment.process', $cart->id) }}" enctype="multipart/form-data">
                 @csrf
@@ -52,38 +67,37 @@
                 <input type="hidden" id="total-payment-{{ $cart->id }}" name="total_payment" value="{{ $cart->total_payment }}">
                 <div class="grid grid-cols-4 gap-4">
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/paypal.png') }}" class="w-16 h-16" alt="PayPal">
+                        <img src="{{ asset('assets/images/paypal.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="PayPal">
                         <input type="radio" name="payment_option" value="PayPal" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/gcash.png') }}" class="w-16 h-16" alt="GCash">
+                        <img src="{{ asset('assets/images/gcash.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="GCash">
                         <input type="radio" name="payment_option" value="GCash" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/paymaya.png') }}" class="w-16 h-16" alt="PayMaya">
+                        <img src="{{ asset('assets/images/paymaya.png') }}" class="w-16 h-16 sm:w-6 sm:h-6 alt=" PayMaya">
                         <input type="radio" name="payment_option" value="PayMaya" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/grab.png') }}" class="w-16 h-16" alt="GrabPay">
+                        <img src="{{ asset('assets/images/grab.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="GrabPay">
                         <input type="radio" name="payment_option" value="GrabPay" class="mt-2">
                     </label>
                 </div>
 
                 <div class="mt-6 flex justify-center space-x-4">
-                    <label for="monthly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
+                    <label for="monthly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-8 sm:px-16 py-4 sm:py-6 text-base sm:text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer w-full sm:w-auto">
                         <input id="monthly-btn-{{ $cart->id }}" type="radio" name="plan" value="Monthly" class="hidden">
                         Monthly
                     </label>
 
-                    <label for="yearly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-16 py-6 text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer">
+                    <label for="yearly-btn-{{ $cart->id }}" class="relative inline-flex items-center justify-center px-8 sm:px-16 py-4 sm:py-6 text-base sm:text-lg font-semibold text-white rounded-2xl shadow-xl transition-all duration-300 bg-gradient-to-br from-green-400 to-blue-600 hover:from-green-500 hover:to-blue-700 focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 cursor-pointer w-full sm:w-auto">
                         <input id="yearly-btn-{{ $cart->id }}" type="radio" name="plan" value="Yearly" class="hidden">
                         Yearly
                     </label>
                 </div>
-
                 <!-- Monthly/Yearly Dropdowns -->
                 <div class="mt-6 hidden" id="monthly-options-{{ $cart->id }}">
                     <label class="block text-lg font-semibold text-gray-900 dark:text-gray-200">📆 Select Month Range</label>
