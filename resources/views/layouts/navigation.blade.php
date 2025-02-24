@@ -1,5 +1,28 @@
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
+    @php
+    use Illuminate\Support\Facades\DB;
+    use Carbon\Carbon;
+
+    $tenantId = auth()->user()->id;
+    $currentMonth = Carbon::now()->month;
+    $currentYear = Carbon::now()->year;
+    $notifications = DB::table('carts')
+    ->join('land_listings', 'carts.land_listing_id', '=', 'land_listings.id')
+    ->where('carts.user_id', $tenantId)
+    ->where('carts.status', 'pending')
+    ->where(function ($query) use ($currentMonth, $currentYear) {
+    $query->where(function ($q) use ($currentMonth) {
+    $q->where('carts.plan', 'Monthly')
+    ->where('carts.end_month', $currentMonth);
+    })->orWhere(function ($q) use ($currentYear) {
+    $q->where('carts.plan', 'Yearly')
+    ->where('carts.end_year', $currentYear);
+    });
+    })
+    ->select('carts.*', 'land_listings.location')
+    ->get();
+    @endphp
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -140,21 +163,51 @@
                         <button type="button" id="notificationBtnTenant"
                             class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                             <i class="fas fa-bell text-lg"></i>
+                            @if ($notifications->count() > 0)
+                            <span id="notificationTenantCount"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                {{ $notifications->count() }}
+                            </span>
+                            @else
                             <span id="notificationTenantCount"
                                 class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
                                 0
                             </span>
+                            @endif
                         </button>
                     </x-slot>
                     <x-slot name="content">
-                        <div id=notificationPaymentTenant" class="p-3 w-80 max-h-96 overflow-y-auto">
-                            <p class="text-gray-500 dark:text-gray-400">No new notification Tenant</p>
+
+                        <div id="notificationPaymentTenant" class="p-3 w-80 max-h-96 overflow-y-auto">
+                            <div class="pb-2 border-b border-gray-300 dark:border-gray-600">
+                                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Notifications</h2>
+                            </div>
+                            @if ($notifications->count() > 0)
+                            @foreach ($notifications as $notification)
+                            <div class="mb-2 p-2">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm">
+                                    Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
+                                    <strong>
+                                        @if ($notification->plan === 'Monthly')
+                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        @elseif ($notification->plan === 'Yearly')
+                                        {{ $notification->end_year }}
+                                        @endif
+                                    </strong>.
+                                </p>
+                                <hr class="border-t border-gray-300 dark:border-gray-600">
+                            </div>
+                            @endforeach
+                            @else
+                            <p class="text-gray-500 dark:text-gray-400">No new notifications.</p>
+                            @endif
                         </div>
                     </x-slot>
-                </x-dropdown>
 
+                </x-dropdown>
                 @endif
                 @endauth
+
                 @auth
                 @if(auth()->user()->role === 'lessee')
                 <!-- Notification Dropdown -->
@@ -163,15 +216,43 @@
                         <button type="button" id="notificationBtnLessee"
                             class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                             <i class="fas fa-bell text-lg"></i>
+                            @if ($notifications->count() > 0)
+                            <span id="notificationLesseeCount"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                {{ $notifications->count() }}
+                            </span>
+                            @else
                             <span id="notificationLesseeCount"
                                 class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
                                 0
                             </span>
+                            @endif
                         </button>
                     </x-slot>
                     <x-slot name="content">
                         <div id=notificationPaymentLessee" class="p-3 w-80 max-h-96 overflow-y-auto">
-                            <p class="text-gray-500 dark:text-gray-400">No new notification for Lessee</p>
+                            <div class="pb-2 border-b border-gray-300 dark:border-gray-600">
+                                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Notifications</h2>
+                            </div>
+                            @if ($notifications->count() > 0)
+                            @foreach ($notifications as $notification)
+                            <div class="mb-2 p-2">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm">
+                                    Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
+                                    <strong>
+                                        @if ($notification->plan === 'Monthly')
+                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        @elseif ($notification->plan === 'Yearly')
+                                        {{ $notification->end_year }}
+                                        @endif
+                                    </strong>.
+                                </p>
+                                <hr class="border-t border-gray-300 dark:border-gray-600">
+                            </div>
+                            @endforeach
+                            @else
+                            <p class="text-gray-500 dark:text-gray-400">No new notifications.</p>
+                            @endif
                         </div>
                     </x-slot>
                 </x-dropdown>
@@ -486,10 +567,17 @@
                         <button type="button" id="notificationBtnTenantRes"
                             class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                             <i class="fas fa-bell text-lg"></i>
+                            @if ($notifications->count() > 0)
+                            <span id="notificationTenantCountRes"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                {{ $notifications->count() }}
+                            </span>
+                            @else
                             <span id="notificationTenantCountRes"
                                 class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
                                 0
                             </span>
+                            @endif
                         </button>
                     </x-slot>
                     <x-slot name="content">
@@ -498,7 +586,28 @@
                 w-64 sm:w-72 md:w-80 lg:w-96 
                 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg 
                 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-                            <p class="text-gray-500 dark:text-gray-400">No new Notification for Tenant.</p>
+                            <div class="pb-2 border-b border-gray-300 dark:border-gray-600">
+                                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Notifications</h2>
+                            </div>
+                            @if ($notifications->count() > 0)
+                            @foreach ($notifications as $notification)
+                            <div class="mb-2 p-2">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm">
+                                    Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
+                                    <strong>
+                                        @if ($notification->plan === 'Monthly')
+                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        @elseif ($notification->plan === 'Yearly')
+                                        {{ $notification->end_year }}
+                                        @endif
+                                    </strong>.
+                                </p>
+                                <hr class="border-t border-gray-300 dark:border-gray-600">
+                            </div>
+                            @endforeach
+                            @else
+                            <p class="text-gray-500 dark:text-gray-400">No new notifications.</p>
+                            @endif
                         </div>
                     </x-slot>
                 </x-dropdown>
@@ -513,10 +622,17 @@
                         <button type="button" id="notificationBtnLesseeRes"
                             class="relative text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                             <i class="fas fa-bell text-lg"></i>
+                            @if ($notifications->count() > 0)
+                            <span id="notificationLesseeCountRes"
+                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                                {{ $notifications->count() }}
+                            </span>
+                            @else
                             <span id="notificationLesseeCountRes"
                                 class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
                                 0
                             </span>
+                            @endif
                         </button>
                     </x-slot>
                     <x-slot name="content">
@@ -525,7 +641,28 @@
                 w-64 sm:w-72 md:w-80 lg:w-96 
                 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg 
                 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
-                            <p class="text-gray-500 dark:text-gray-400">No new Notification for Lessee.</p>
+                            <div class="pb-2 border-b border-gray-300 dark:border-gray-600">
+                                <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Notifications</h2>
+                            </div>
+                            @if ($notifications->count() > 0)
+                            @foreach ($notifications as $notification)
+                            <div class="mb-2 p-2">
+                                <p class="text-gray-800 dark:text-gray-200 text-sm">
+                                    Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
+                                    <strong>
+                                        @if ($notification->plan === 'Monthly')
+                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        @elseif ($notification->plan === 'Yearly')
+                                        {{ $notification->end_year }}
+                                        @endif
+                                    </strong>.
+                                </p>
+                                <hr class="border-t border-gray-300 dark:border-gray-600">
+                            </div>
+                            @endforeach
+                            @else
+                            <p class="text-gray-500 dark:text-gray-400">No new notifications.</p>
+                            @endif
                         </div>
                     </x-slot>
                 </x-dropdown>

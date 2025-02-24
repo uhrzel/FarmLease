@@ -44,7 +44,7 @@
                 "positionClass": "toast-top-right",
                 "timeOut": 5000
             };
-            @foreach($errors -> all() as $error)
+            @foreach($errors->all() as $error)
             toastr.error("{{ $error }}");
             @endforeach
         });
@@ -98,22 +98,22 @@
                 <input type="hidden" id="total-payment-{{ $cart->id }}" name="total_payment" value="{{ $cart->total_payment }}">
                 <div class="grid grid-cols-4 gap-4">
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/paypal.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="PayPal">
+                        <img src="{{ asset('assets/images/paypal.png') }}" class="w-16 h-16" alt="PayPal">
                         <input type="radio" name="payment_option" value="PayPal" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/gcash.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="GCash">
+                        <img src="{{ asset('assets/images/gcash.png') }}" class="w-16 h-16" alt="GCash">
                         <input type="radio" name="payment_option" value="GCash" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/paymaya.png') }}" class="w-16 h-16 sm:w-6 sm:h-6 alt=" PayMaya">
+                        <img src="{{ asset('assets/images/paymaya.png') }}" class="w-16 h-16" alt=" PayMaya">
                         <input type="radio" name="payment_option" value="PayMaya" class="mt-2">
                     </label>
 
                     <label class="cursor-pointer p-4 border rounded-lg flex flex-col items-center bg-white dark:bg-gray-700">
-                        <img src="{{ asset('assets/images/grab.png') }}" class="w-16 h-16 sm:w-6 sm:h-6" alt="GrabPay">
+                        <img src="{{ asset('assets/images/grab.png') }}" class="w-16 h-16" alt="GrabPay">
                         <input type="radio" name="payment_option" value="GrabPay" class="mt-2">
                     </label>
                 </div>

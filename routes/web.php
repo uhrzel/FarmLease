@@ -93,4 +93,4 @@ Route::middleware('auth')->group(function () {
 });
 
 // Include Authentication Routes
-require __DIR__ . '/auth.php';
+require __DIR__ . '/auth.php';  
