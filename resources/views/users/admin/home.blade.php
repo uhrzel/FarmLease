@@ -28,9 +28,9 @@
                 $sortedListings = $landListings->sortByDesc('created_at');
                 @endphp
                 @forelse($sortedListings as $listing)
-                @if($listing->status === 'approved')
+                @if($listing->transaction->status === 'available' || $listing->transaction->status === 'sold_out' || $listing->transaction->status === 'reserved')
                 <figure class="flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/4 group wow fadeInUp mb-8" data-wow-duration="1s">
-                    <div class="relative overflow-hidden cursor-pointer mb-6">
+                    <div class="relative overflow-hidden cursor-pointer">
                         <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}"
                             data-gallery="gallery1"
                             data-title="Land Owner: {{ $listing->landowner_name }} <br> Location: {{ $listing->location }}"
@@ -54,23 +54,36 @@
                             </div>
                         </a>
                     </div>
-                    <h3 class="text-base leading-normal font-semibold my-1 text-gray-900 dark:text-white">{{ $listing->landowner_name }}</h3>
-                    <small class="d-block text-gray-600 dark:text-gray-400">Location: {{ $listing->location }}</small><br>
-                    <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} Php</small>
-                    <small class="d-block text-gray-600 dark:text-gray-400"><br>
-                        Status:
-                        @php
-                        $status = optional($listing->transaction)->status ?? 'Not Available';
-                        $statusColors = [
-                        'available' => 'text-green-600',
-                        'pending' => 'text-yellow-500',
-                        'sold_out' => 'text-red-600',
-                        'reserved' => 'text-blue-500' // You can change this color
-                        ];
-                        $statusColor = $statusColors[$status] ?? 'text-gray-500';
-                        @endphp
-                        <strong class="{{ $statusColor }}">{{ ucfirst($status) }}</strong>
-                    </small>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-m shadow-md">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ $listing->landowner_name }}</h3>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt text-blue-500"></i>
+                            <span class="font-medium">Location:</span> {{ $listing->location }}
+                        </p>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-tag text-green-500"></i>
+                            <span class="font-medium">Price:</span> {{ number_format($listing->price, 2) }} Php
+                        </p>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                            <i class="fas fa-info-circle text-indigo-500"></i>
+                            <span class="font-medium">Status:</span>
+                            @php
+                            $status = optional($listing->transaction)->status ?? 'Not Available';
+                            $statusColors = [
+                            'available' => 'text-green-600',
+                            'pending' => 'text-yellow-500',
+                            'sold_out' => 'text-red-600',
+                            'reserved' => 'text-blue-500'
+                            ];
+                            $statusColor = $statusColors[$status] ?? 'text-gray-500';
+                            @endphp
+                            <strong class="{{ $statusColor }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</strong>
+                        </p>
+                    </div>
+
                 </figure>
                 @endif
                 @empty

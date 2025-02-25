@@ -25,10 +25,10 @@ class CartController extends Controller
             if (!$transaction) {
                 return response()->json(['message' => 'No transaction found for this listing.'], 404);
             }
-            if (Cart::where('user_id', $user->id)->where('land_listing_id', $landListing->id)->exists()) {
+            /*   if (Cart::where('user_id', $user->id)->where('land_listing_id', $landListing->id)->exists()) {
                 Log::info('Attempt to add duplicate cart item', ['user_id' => $user->id, 'land_listing_id' => $landListing->id]);
                 return response()->json(['message' => 'This land is already in your cart.'], 409);
-            }
+            } */
             $cart = Cart::create([
                 'user_id' => $user->id,
                 'land_listing_id' => $landListing->id,
@@ -36,7 +36,7 @@ class CartController extends Controller
                 'total_payment' => $landListing->price,
                 'status' => 'pending',
             ]);
-
+            $transaction->update(['status' => 'sold_out']);
             Log::info('Land added to cart successfully', ['cart_id' => $cart->id, 'user_id' => $user->id]);
 
             return response()->json(['message' => 'Land added to cart successfully!', 'cart' => $cart], 200);

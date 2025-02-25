@@ -49,16 +49,22 @@ class LandListingController extends Controller
     }
     public function index() //superadmin only
     {
-        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+        $landListings = LandListing::where('status', 'approved')
+            ->whereHas('transaction', function ($query) {
+                $query->whereIn('status', ['available', 'sold_out', 'reserved']);
+            })
+            ->with('transaction')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('users.superadmin.land_posting', compact('landListings'));
     }
     public function admin() //admin view
     {
         $landListings = LandListing::where('status', 'approved')
             ->whereHas('transaction', function ($query) {
-                $query->where('status', 'available');
+                $query->whereIn('status', ['available', 'sold_out', 'reserved']);
             })
-            ->with('transaction') // Ensure the transaction relationship is loaded
+            ->with('transaction')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -156,9 +162,9 @@ class LandListingController extends Controller
     {
         $landListings = LandListing::where('status', 'approved')
             ->whereHas('transaction', function ($query) {
-                $query->where('status', 'available');
+                $query->whereIn('status', ['available', 'sold_out', 'reserved']);
             })
-            ->with('transaction') // Ensure the transaction relationship is loaded
+            ->with('transaction')
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -170,11 +176,11 @@ class LandListingController extends Controller
     {
         $landListings = LandListing::where('status', 'approved')
             ->whereHas('transaction', function ($query) {
-                $query->where('status', 'available');
+                $query->whereIn('status', ['available', 'sold_out', 'reserved']);
             })
+            ->with('transaction')
             ->orderBy('created_at', 'desc')
             ->get();
-
-        return view('users.tenant.home', compact('landListings'));
+        return view('users.lessee.home', compact('landListings'));
     }
 }

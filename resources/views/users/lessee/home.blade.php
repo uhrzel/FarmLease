@@ -34,9 +34,9 @@
                 $sortedListings = $landListings->sortByDesc('created_at');
                 @endphp
                 @forelse($sortedListings as $listing)
-                @if($listing->status === 'approved')
+                @if($listing->transaction->status === 'available' || $listing->transaction->status === 'sold_out' || $listing->transaction->status === 'reserved')
                 <figure class="flex-shrink max-w-full px-3 w-full sm:w-1/2 lg:w-1/4 group wow fadeInUp mb-8" data-wow-duration="1s">
-                    <div class="relative overflow-hidden cursor-pointer mb-6">
+                    <div class="relative overflow-hidden cursor-pointer">
                         <a href="{{ asset('storage/land_images/' . basename($listing->image)) }}"
                             data-gallery="gallery1"
                             data-title="Land Owner: {{ $listing->landowner_name }} <br> Location: {{ $listing->location }}"
@@ -48,20 +48,24 @@
             Phone: {{ $listing->phone_number }} <br> 
             Description: {{ $listing->description }} <br> 
             <div class='flex space-x-3 mt-4'>
-                <a href='#' class='rent-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center' data-id='{{ $listing->id }}'>
-                    <i class='fas fa-shopping-cart mr-2'></i> Rent Now
-                </a>
+             <a href='#' class='rent-btn bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center {{ $listing->transaction->status === 'sold_out' ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}'
+                            data-id='{{ $listing->id }}'
+                            data-user-id='{{ $listing->transaction->user_id ?? '' }}'
+                            {{ $listing->transaction->status === 'sold_out' ? 'disabled' : '' }}> 
+                            <i class='fas fa-shopping-cart mr-2'></i> Rent Now
+                        </a>
 
-                <a href='tel:{{ $listing->phone_number }}' class='bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
-                    <i class='fas fa-phone-alt mr-2'></i> Call Owner
-                </a>
 
-                <a href='https://www.google.com/maps/search/?api=1&query={{ urlencode($listing->location) }}' target='_blank' class='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
-                    <i class='fas fa-map-marker-alt mr-2'></i> View on Maps
-                </a>
-                
-            </div>
-        "
+                        <a href='tel:{{ $listing->phone_number }}' class='bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                            <i class='fas fa-phone-alt mr-2'></i> Call Owner
+                        </a>
+
+                        <a href='https://www.google.com/maps/search/?api=1&query={{ urlencode($listing->location) }}' target='_blank' class='bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center'>
+                            <i class='fas fa-map-marker-alt mr-2'></i> View on Maps
+                        </a>
+
+                    </div>
+                    "
                             class="glightbox3">
 
                             <img class="block w-full h-auto transform duration-500" src="{{ asset('storage/land_images/' . basename($listing->image)) }}" alt="Land Image">
@@ -71,12 +75,37 @@
                             </div>
                         </a>
                     </div>
-                    <h3 class="text-base leading-normal font-semibold my-1 text-gray-900 dark:text-white">{{ $listing->landowner_name }}</h3>
-                    <small class="d-block text-gray-600 dark:text-gray-400">Location: {{ $listing->location }}</small><br>
-                    <small class="d-block text-gray-600 dark:text-gray-400">Price: {{ $listing->price }} Php</small>
-                    <small class="d-block text-gray-600 dark:text-gray-400"> <br>
-                        Status: <strong class="text-green-600">{{ optional($listing->transaction)->status ?? 'Not Available' }}</strong>
-                    </small>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-m shadow-md">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">{{ $listing->landowner_name }}</h3>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-map-marker-alt text-blue-500"></i>
+                            <span class="font-medium">Location:</span> {{ $listing->location }}
+                        </p>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-tag text-green-500"></i>
+                            <span class="font-medium">Price:</span> {{ number_format($listing->price, 2) }} Php
+                        </p>
+
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                            <i class="fas fa-info-circle text-indigo-500"></i>
+                            <span class="font-medium">Status:</span>
+                            @php
+                            $status = optional($listing->transaction)->status ?? 'Not Available';
+                            $statusColors = [
+                            'available' => 'text-green-600',
+                            'pending' => 'text-yellow-500',
+                            'sold_out' => 'text-red-600',
+                            'reserved' => 'text-blue-500'
+                            ];
+                            $statusColor = $statusColors[$status] ?? 'text-gray-500';
+                            @endphp
+                            <strong class="{{ $statusColor }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</strong>
+                        </p>
+                    </div>
+
+
                     <!--       <div class='map-container' data-location='{{ $listing->location }}' style='height: 100%; width: 200%; margin-top: 20px;'></div> -->
                 </figure>
                 @endif
@@ -92,15 +121,7 @@
             <script src="{{ asset('src/vendors/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
             <script src="{{ asset('src/js/theme.js') }}"></script>
         </div>
-        <script>
-            document.addEventListener("click", function(event) {
-                if (event.target.classList.contains("rent-btn")) {
-                    event.preventDefault();
-                    let listingId = event.target.getAttribute("data-id");
-                    alert("Request to rent listing ID: " + listingId);
-                }
-            });
-        </script>
+
         <script
             async
             defer
@@ -131,6 +152,59 @@
                     });
                 });
             }
+            document.addEventListener("click", function(event) {
+                let rentBtn = event.target.closest(".rent-btn");
+                if (rentBtn) {
+                    event.preventDefault();
+
+                    let listingId = rentBtn.getAttribute("data-id");
+                    let userId = rentBtn.getAttribute("data-user-id");
+
+                    if (!userId) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Oops...",
+                            text: "You must be logged in to rent a land."
+                        });
+                        return;
+                    }
+                    if (window.lightbox && typeof window.lightbox.close === "function") {
+                        window.lightbox.close();
+                    }
+
+                    fetch("{{ route('cart.add') }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                            },
+                            body: JSON.stringify({
+                                land_listing_id: listingId
+                            })
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Success!",
+                                    text: data.message,
+                                    confirmButtonColor: "#3085d6"
+                                }).then(() => {
+                                    window.location.href = "{{ route('cart.lessee.index') }}";
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: "An error occurred while adding to cart."
+                            });
+                        });
+                }
+            });
         </script>
 
 
