@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
 
 // Public Routes
 Route::get('/', fn() => view('welcome'));
@@ -53,9 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->middleware('auth')
         ->name('generate_form');
     Route::get('/superadmin/land_posting', [LandListingController::class, 'index'])->name('land_posting');
-    Route::get('/superadmin/transactions', fn() => view('users.superadmin.transactions'))
-        ->middleware('auth')
-        ->name('transactions');
+    Route::get('/superadmin/transactions', [TransactionController::class, 'transactions'])->name('transactions');
     Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
         ->middleware('auth')
         ->name('feedbacks');

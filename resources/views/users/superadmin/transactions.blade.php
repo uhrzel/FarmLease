@@ -1,18 +1,121 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Transactions') }}
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-white leading-tight">
+            {{ __('View Transactions') }}
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">Welcome to the Superadmin transaction dashboard: {{ Auth::user()->username }}</h1><span></span>
-                    <p class="text-gray-700 dark:text-gray-300">This is a secure area of the application. Only authorized users can view this page.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam placeat, quas nulla suscipit nesciunt eveniet doloribus pariatur distinctio. Excepturi nisi perferendis voluptatibus ratione error velit voluptates aperiam, sunt repellat officia facilis pariatur quae natus nam harum similique nulla animi delectus cumque laudantium fuga nihil reprehenderit! Maiores earum neque reprehenderit repellendus, ducimus tempore, doloribus sint exercitationem delectus, rem optio? Vel dignissimos similique culpa quibusdam voluptates laudantium ratione beatae alias. Est quis animi maxime dolorem illum sapiente consequatur, delectus eius aut obcaecati odit laboriosam nemo accusantium nisi ea exercitationem reiciendis consectetur iste illo. Nihil natus libero provident doloribus temporibus? Ad minima culpa iusto, ipsa suscipit sequi repudiandae ut reiciendis repellat, tenetur quo perferendis. Assumenda consequatur officia molestias possimus vitae incidunt ea ducimus cupiditate, consequuntur optio porro deserunt eligendi perspiciatis minima dolore praesentium! Omnis fugit vitae amet veniam incidunt explicabo non. Eaque distinctio corrupti omnis reprehenderit consequatur maiores, soluta assumenda magnam illo amet ea veniam earum aliquid qui ipsum fugit quae. Id, itaque quibusdam. Officiis, nam. Praesentium officia perspiciatis magnam sunt nam quaerat delectus illo rerum deleniti minus, provident ipsum, voluptatibus mollitia esse sint veniam, quod blanditiis et libero. Officia aspernatur minima voluptate perferendis mollitia rem fugiat ratione. Odit quibusdam tempora perferendis tempore recusandae exercitationem praesentium vitae ad fugit aliquid ratione beatae eaque nam, voluptate quos animi in incidunt pariatur deserunt quas deleniti veritatis. Minus, cumque necessitatibus deserunt atque vel eveniet laborum harum reprehenderit, vero blanditiis mollitia expedita, debitis commodi. Officiis fugiat mollitia ab veniam temporibus omnis ad, incidunt inventore nulla nesciunt veritatis magni nisi placeat totam consequatur libero consectetur quo cumque quis. Repellat sunt excepturi explicabo repudiandae. Voluptate atque quisquam, obcaecati inventore dolore rerum velit nostrum iusto, nobis architecto excepturi, eos explicabo ipsum laudantium facere culpa laboriosam. Alias perferendis enim illum explicabo, voluptatem voluptates non aut tenetur assumenda libero saepe architecto quibusdam hic dolorem molestias delectus distinctio veritatis quis expedita fuga. Facere, tempore illo, aut, architecto sequi incidunt dicta quidem laboriosam expedita assumenda eos enim quam nisi dolorem voluptates nulla nobis laudantium non voluptas dolores modi ea dolor. Nihil tempora assumenda aut quos impedit facilis esse laborum delectus, nam ipsa adipisci soluta incidunt voluptates vitae vero quas ex similique repellendus repellat perspiciatis mollitia consectetur excepturi! Cum tempora eligendi odit consectetur molestias corporis debitis deleniti voluptatem quaerat. Reprehenderit odit dolores, praesentium illum numquam aliquam soluta eveniet quia magnam placeat sequi accusantium adipisci repellendus nisi accusamus ipsam quisquam in blanditiis ex tempore consectetur dolor. Quam qui autem molestiae accusamus rerum odio voluptatum fugiat incidunt! Perferendis reiciendis, ratione deserunt provident accusantium quidem voluptates aperiam. Et atque optio rem! Tempore, numquam deserunt! Quasi velit molestiae reprehenderit! Ab sequi aperiam modi sunt perferendis eos ratione magni voluptatibus ex, harum doloremque voluptates ea accusantium. Earum temporibus debitis dolore rerum, mollitia odit a totam libero commodi nulla. Doloribus vero facere dolorem, officia porro tempore dicta ipsum maxime quidem illo, ad assumenda aut, quisquam qui! Voluptates, ipsam nemo! Neque at deserunt accusantium odit, aut nulla, sint autem nesciunt doloribus debitis non ad saepe nemo quae eos deleniti. Ab, quaerat?</p>
-                </div>
+    <div class="container mx-auto py-6">
+        <div class="bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-primary text-white px-6 py-4">
+                <h5 class="text-lg text-gray-800 dark:text-gray-300 font-semibold mb-0">Tenant Transactions</h5>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full border-collapse border border-gray-200 dark:border-gray-700">
+                    <thead class="bg-gray-900 text-white dark:bg-gray-700">
+                        <tr class="text-left">
+                            <th class="px-4 py-2">Tenant</th>
+                            <th class="px-4 py-2">Landowner</th>
+                            <th class="px-4 py-2">Location</th>
+                            <th class="px-4 py-2 text-center">Land Price</th>
+                            <th class="px-4 py-2 text-center">Transaction Date</th>
+                            <th class="px-4 py-2 text-center">Payment Option</th>
+                            <th class="px-4 py-2 text-center">Amount Paid</th>
+                            <th class="px-4 py-2 text-center">Payment Frequency</th>
+                            <th class="px-4 py-2 text-center">Status</th>
+                            <th class="px-4 py-2 text-center">Lease Period</th>
+                            <th class="px-4 py-2 text-center">Pending Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-800 dark:text-gray-300">
+                        @foreach ($transactions->where('user.role', 'tenant') as $transaction)
+                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <td class="px-4 py-3">{{ $transaction->user->firstname ?? 'N/A' }} {{ $transaction->user->lastname ?? 'N/A' }}</td>
+                            <td class="px-4 py-3">{{ $transaction->landListing->landowner_name ?? 'N/A' }}</td>
+                            <td class="px-4 py-3">{{ $transaction->landListing->location ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->landListing->price, 2) }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->updated_at->format('M d, Y') }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->payment_option }}</td>
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->down_payment, 2) }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->plan ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-3 py-1 rounded-full text-white 
+                                        {{ $transaction->status == 'paid' ? 'bg-green-500' : 'bg-yellow-500' }}">
+                                    {{ ucfirst($transaction->status) }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 text-center">
+                                {{ $transaction->start_year ?? 'N/A' }} - {{ $transaction->end_year ?? 'N/A' }}
+                            </td>
+
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->total_payment, 2) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
+
+        <!-- Leasee Transactions Table -->
+        <div class="bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden mt-8">
+            <div class="bg-primary text-white px-6 py-4">
+                <h5 class="text-lg text-gray-800 dark:text-gray-300 font-semibold mb-0">Leasee Transactions</h5>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="table-auto w-full border-collapse border border-gray-200 dark:border-gray-700">
+                    <thead class="bg-gray-900 text-white dark:bg-gray-700">
+                        <tr class="text-left">
+                            <th class="px-4 py-2">Leasee</th>
+                            <th class="px-4 py-2">Landowner</th>
+                            <th class="px-4 py-2">Location</th>
+                            <th class="px-4 py-2 text-center">Land Price</th>
+                            <th class="px-4 py-2 text-center">Transaction Date</th>
+                            <th class="px-4 py-2 text-center">Payment Option</th>
+                            <th class="px-4 py-2 text-center">Amount Paid</th>
+                            <th class="px-4 py-2 text-center">Payment Frequency</th>
+                            <th class="px-4 py-2 text-center">Status</th>
+                            <th class="px-4 py-2 text-center">Lease Period</th>
+                            <th class="px-4 py-2 text-center">Pending Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-800 dark:text-gray-300">
+                        @foreach ($transactions->where('user.role', 'lessee') as $transaction)
+                        <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
+                            <td class="px-4 py-3">{{ $transaction->user->firstname ?? 'N/A' }} {{ $transaction->user->lastname ?? 'N/A' }}</td>
+                            <td class="px-4 py-3">{{ $transaction->landListing->landowner_name ?? 'N/A' }}</td>
+                            <td class="px-4 py-3">{{ $transaction->landListing->location ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->landListing->price, 2) }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->updated_at->format('M d, Y') }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->payment_option }}</td>
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->down_payment, 2) }}</td>
+                            <td class="px-4 py-3 text-center">{{ $transaction->plan ?? 'N/A' }}</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-3 py-1 rounded-full text-white 
+                                        {{ $transaction->status == 'paid' ? 'bg-green-500' : 'bg-yellow-500' }}">
+                                    {{ ucfirst($transaction->status) }}
+                                </span>
+                            </td>
+                            @php
+                            $months = [
+                            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun',
+                            7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'
+                            ];
+                            @endphp
+
+                            <td class="px-4 py-3 text-center">
+                                {{ $transaction->start_month ? ($months[$transaction->start_month] ?? 'N/A') : 'N/A' }} -
+                                {{ $transaction->end_month ? ($months[$transaction->end_month] ?? 'N/A') : 'N/A' }}
+                            </td>
+
+                            <td class="px-4 py-3 text-center">{{ number_format($transaction->total_payment, 2) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </x-app-layout>

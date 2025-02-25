@@ -37,4 +37,9 @@ class LandListing extends Model
     {
         return $this->belongsTo(User::class, 'landowner_id');
     }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'land_listing_id');
+    }
+
 }
