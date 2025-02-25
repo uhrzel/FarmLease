@@ -49,7 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Route for Superadmin
     Route::get('/superadmin/users', [UserController::class, 'showUsers'])->middleware('auth')->name('users');
-    Route::get('/superadmin/generate_form', fn() => view('users.superadmin.generate_form'))
+    Route::get('/superadmin/generate_form', [UserController::class, 'userReport'])
         ->middleware('auth')
         ->name('generate_form');
     Route::get('/superadmin/land_posting', [LandListingController::class, 'index'])->name('land_posting');
@@ -93,4 +93,4 @@ Route::middleware('auth')->group(function () {
 });
 
 // Include Authentication Routes
-require __DIR__ . '/auth.php';  
+require __DIR__ . '/auth.php';

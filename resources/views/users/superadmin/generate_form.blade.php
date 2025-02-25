@@ -1,18 +1,80 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Generate Report') }}
+        <h2 class="font-semibold text-xl text-gray-900 dark:text-gray-100 leading-tight">
+            {{ __('Generate Report: User Insights') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 leading-tight">Welcome to the Superadmin generate forms dashboard: {{ Auth::user()->username }}</h1><span></span>
-                    <p class="text-gray-700 dark:text-gray-300">This is a secure area of the application. Only authorized users can view this page.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem veniam placeat, quas nulla suscipit nesciunt eveniet doloribus pariatur distinctio. Excepturi nisi perferendis voluptatibus ratione error velit voluptates aperiam, sunt repellat officia facilis pariatur quae natus nam harum similique nulla animi delectus cumque laudantium fuga nihil reprehenderit! Maiores earum neque reprehenderit repellendus, ducimus tempore, doloribus sint exercitationem delectus, rem optio? Vel dignissimos similique culpa quibusdam voluptates laudantium ratione beatae alias. Est quis animi maxime dolorem illum sapiente consequatur, delectus eius aut obcaecati odit laboriosam nemo accusantium nisi ea exercitationem reiciendis consectetur iste illo. Nihil natus libero provident doloribus temporibus? Ad minima culpa iusto, ipsa suscipit sequi repudiandae ut reiciendis repellat, tenetur quo perferendis. Assumenda consequatur officia molestias possimus vitae incidunt ea ducimus cupiditate, consequuntur optio porro deserunt eligendi perspiciatis minima dolore praesentium! Omnis fugit vitae amet veniam incidunt explicabo non. Eaque distinctio corrupti omnis reprehenderit consequatur maiores, soluta assumenda magnam illo amet ea veniam earum aliquid qui ipsum fugit quae. Id, itaque quibusdam. Officiis, nam. Praesentium officia perspiciatis magnam sunt nam quaerat delectus illo rerum deleniti minus, provident ipsum, voluptatibus mollitia esse sint veniam, quod blanditiis et libero. Officia aspernatur minima voluptate perferendis mollitia rem fugiat ratione. Odit quibusdam tempora perferendis tempore recusandae exercitationem praesentium vitae ad fugit aliquid ratione beatae eaque nam, voluptate quos animi in incidunt pariatur deserunt quas deleniti veritatis. Minus, cumque necessitatibus deserunt atque vel eveniet laborum harum reprehenderit, vero blanditiis mollitia expedita, debitis commodi. Officiis fugiat mollitia ab veniam temporibus omnis ad, incidunt inventore nulla nesciunt veritatis magni nisi placeat totam consequatur libero consectetur quo cumque quis. Repellat sunt excepturi explicabo repudiandae. Voluptate atque quisquam, obcaecati inventore dolore rerum velit nostrum iusto, nobis architecto excepturi, eos explicabo ipsum laudantium facere culpa laboriosam. Alias perferendis enim illum explicabo, voluptatem voluptates non aut tenetur assumenda libero saepe architecto quibusdam hic dolorem molestias delectus distinctio veritatis quis expedita fuga. Facere, tempore illo, aut, architecto sequi incidunt dicta quidem laboriosam expedita assumenda eos enim quam nisi dolorem voluptates nulla nobis laudantium non voluptas dolores modi ea dolor. Nihil tempora assumenda aut quos impedit facilis esse laborum delectus, nam ipsa adipisci soluta incidunt voluptates vitae vero quas ex similique repellendus repellat perspiciatis mollitia consectetur excepturi! Cum tempora eligendi odit consectetur molestias corporis debitis deleniti voluptatem quaerat. Reprehenderit odit dolores, praesentium illum numquam aliquam soluta eveniet quia magnam placeat sequi accusantium adipisci repellendus nisi accusamus ipsam quisquam in blanditiis ex tempore consectetur dolor. Quam qui autem molestiae accusamus rerum odio voluptatum fugiat incidunt! Perferendis reiciendis, ratione deserunt provident accusantium quidem voluptates aperiam. Et atque optio rem! Tempore, numquam deserunt! Quasi velit molestiae reprehenderit! Ab sequi aperiam modi sunt perferendis eos ratione magni voluptatibus ex, harum doloremque voluptates ea accusantium. Earum temporibus debitis dolore rerum, mollitia odit a totam libero commodi nulla. Doloribus vero facere dolorem, officia porro tempore dicta ipsum maxime quidem illo, ad assumenda aut, quisquam qui! Voluptates, ipsam nemo! Neque at deserunt accusantium odit, aut nulla, sint autem nesciunt doloribus debitis non ad saepe nemo quae eos deleniti. Ab, quaerat?</p>
+        <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
+
+                {{-- Chart --}}
+                <canvas id="userChart" class="mb-8"></canvas>
+
+                {{-- Percentage Cards (4 per row) --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center mb-8">
+                    @foreach ($data as $role)
+                    <div class="p-4 bg-white dark:bg-gray-900 shadow-md rounded-lg border border-gray-300 dark:border-gray-700">
+                        <div class="flex items-center justify-center space-x-2">
+                            <span class="w-3 h-3 rounded-full 
+                                    @if($role['role'] === 'tenant') bg-[#8B4513] 
+                                    @elseif($role['role'] === 'lessee') bg-[#607D8B] 
+                                    @elseif($role['role'] === 'land_owner') bg-[#4CAF50] 
+                                    @elseif($role['role'] === 'admin') bg-[#A68A3D] 
+                                    @else bg-gray-800 
+                                    @endif"></span>
+                            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ ucfirst($role['role']) }}</span>
+                        </div>
+                        <p class="text-gray-800 dark:text-gray-300 mt-1">{{ $role['percentage'] }}%</p>
+                    </div>
+                    @endforeach
                 </div>
+
+                {{-- User Count Cards (2 per row) --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
+                    @foreach ($data as $role)
+                    <div class="p-6 bg-white dark:bg-gray-900 shadow-md rounded-lg border border-gray-300 dark:border-gray-700 flex flex-col items-center">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <span class="w-3 h-3 rounded-full 
+                                    @if($role['role'] === 'tenant') bg-[#8B4513] 
+                                    @elseif($role['role'] === 'lessee') bg-[#607D8B] 
+                                    @elseif($role['role'] === 'land_owner') bg-[#4CAF50] 
+                                    @elseif($role['role'] === 'admin') bg-[#A68A3D] 
+                                    @else bg-gray-800 
+                                    @endif"></span>
+                            <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ ucfirst($role['role']) }}</span>
+                        </div>
+                        <p class="text-4xl font-bold tracking-wider text-gray-900 dark:text-gray-100">{{ number_format($role['count']) }}</p>
+                        <span class="text-gray-600 dark:text-gray-400 uppercase tracking-wider text-sm">Users</span>
+                    </div>
+                    @endforeach
+                </div>
+
             </div>
         </div>
+    </div>
+
+    {{-- Chart Script --}}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('userChart').getContext('2d');
+        const chartData = {
+            labels: @json($data -> pluck('role')),
+            datasets: [{
+                label: 'User Roles',
+                data: @json($data -> pluck('count')),
+                backgroundColor: ['#8B4513', '#607D8B', '#4CAF50', '#A68A3D'],
+                borderWidth: 1
+            }]
+        };
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true
+            }
+        });
+    </script>
 </x-app-layout>
