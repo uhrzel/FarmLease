@@ -54,7 +54,14 @@ class LandListingController extends Controller
     }
     public function admin() //admin view
     {
-        $landListings = LandListing::where('status', 'approved')->orderBy('created_at', 'desc')->get();
+        $landListings = LandListing::where('status', 'approved')
+            ->whereHas('transaction', function ($query) {
+                $query->where('status', 'available');
+            })
+            ->with('transaction') // Ensure the transaction relationship is loaded
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('users.admin.home', compact('landListings'));
     }
     public function newListings() //admin notification
