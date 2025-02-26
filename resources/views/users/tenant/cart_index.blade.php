@@ -44,7 +44,7 @@
                 "positionClass": "toast-top-right",
                 "timeOut": 5000
             };
-            @foreach($errors->all() as $error)
+            @foreach($errors -> all() as $error)
             toastr.error("{{ $error }}");
             @endforeach
         });
@@ -141,15 +141,21 @@
                         <select id="start-month-{{ $cart->id }}" name="start-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>Start Month</option>
                             @foreach (range(1, 12) as $month)
-                            <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 1)) }}</option>
+                            <option value="{{ sprintf('%02d', $month) }}-01-{{ date('Y') }}">
+                                {{ date('F 1, Y', mktime(0, 0, 0, $month, 1, date('Y'))) }}
+                            </option>
                             @endforeach
                         </select>
+
                         <select id="end-month-{{ $cart->id }}" name="end-month" class="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-900/60 backdrop-blur-lg text-gray-900 dark:text-gray-100 rounded-xl shadow-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 hover:bg-white dark:hover:bg-gray-800">
                             <option value="" disabled selected>End Month</option>
                             @foreach (range(1, 12) as $month)
-                            <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 1)) }}</option>
+                            <option value="{{ sprintf('%02d', $month) }}-01-{{ date('Y') }}">
+                                {{ date('F 1, Y', mktime(0, 0, 0, $month, 1, date('Y'))) }}
+                            </option>
                             @endforeach
                         </select>
+
                     </div>
                 </div>
 

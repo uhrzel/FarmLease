@@ -15,8 +15,8 @@ class PaymentController extends Controller
             'total_payment' => 'required|numeric|min:0',
             'down_payment' => 'required|numeric|min:0',
             'reference_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'start-month' => 'nullable|integer|min:1|max:12',
-            'end-month' => 'nullable|integer|min:1|max:12',
+            'start-month' => ['nullable', 'date_format:m-d-Y'],
+            'end-month' => ['nullable', 'date_format:m-d-Y'],
             'start-year' => 'nullable|integer|min:2024|max:2030',
             'end-year' => 'nullable|integer|min:2024|max:2030',
         ]);
@@ -27,15 +27,38 @@ class PaymentController extends Controller
             $cart->reference_image = $filePath;
         }
 
+        $startMonth = ($cart->status !== 'Paid' && $request->filled('start-month'))
+            ? \Carbon\Carbon::createFromFormat('m-d-Y', $request->input('start-month'))->format('Y-m-d')
+            : $cart->start_month;
+
+        $endMonth = ($cart->status !== 'Paid' && $request->filled('end-month'))
+            ? \Carbon\Carbon::createFromFormat('m-d-Y', $request->input('end-month'))->format('Y-m-d')
+            : $cart->end_month;
+
+        $startYear = ($cart->status !== 'Paid' && $request->filled('start-year'))
+            ? $request->input('start-year')
+            : $cart->start_year;
+
+        $endYear = ($cart->status !== 'Paid' && $request->filled('end-year'))
+            ? $request->input('end-year')
+            : $cart->end_year;
+        if ($cart->status !== 'Paid' && $request->filled('plan')) {
+            $cart->plan = $request->plan;
+        }
+
         $cart->payment_option = $request->payment_option;
-        $cart->plan = $request->plan ?? null;
-        $cart->start_month = $request->input('start-month');
-        $cart->end_month = $request->input('end-month');
-        $cart->start_year = $request->input('start-year');
-        $cart->end_year = $request->input('end-year');
+        $cart->start_month = $startMonth;
+        $cart->end_month = $endMonth;
+        $cart->start_year = $startYear;
+        $cart->end_year = $endYear;
         $cart->total_payment = $request->total_payment;
         $cart->down_payment = $request->down_payment;
-        $cart->status = ($request->total_payment == 0.00) ? 'Paid' : 'Pending';
+
+        if ($request->total_payment == 0.00) {
+            $cart->status = 'Paid';
+        } else {
+            $cart->status = 'Pending';
+        }
         $cart->save();
 
         if ($cart->status === 'Pending') {

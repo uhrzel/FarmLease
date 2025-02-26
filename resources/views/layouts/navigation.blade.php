@@ -2,11 +2,11 @@
     <!-- Primary Navigation Menu -->
     @php
     use Illuminate\Support\Facades\DB;
-    use Carbon\Carbon;
 
     $tenantId = auth()->user()->id;
-    $currentMonth = Carbon::now()->month;
-    $currentYear = Carbon::now()->year;
+    $currentMonth = date('m');
+    $currentYear = date('Y');
+
     $notifications = DB::table('carts')
     ->join('land_listings', 'carts.land_listing_id', '=', 'land_listings.id')
     ->where('carts.user_id', $tenantId)
@@ -14,10 +14,10 @@
     ->where(function ($query) use ($currentMonth, $currentYear) {
     $query->where(function ($q) use ($currentMonth) {
     $q->where('carts.plan', 'Monthly')
-    ->where('carts.end_month', $currentMonth);
+    ->whereRaw('DATE_FORMAT(carts.end_month, "%m") = ?', [$currentMonth]);
     })->orWhere(function ($q) use ($currentYear) {
     $q->where('carts.plan', 'Yearly')
-    ->where('carts.end_year', $currentYear);
+    ->whereRaw('DATE_FORMAT(carts.end_month, "%Y") = ?', [$currentYear]);
     });
     })
     ->select('carts.*', 'land_listings.location')
@@ -189,9 +189,9 @@
                                     Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
                                     <strong>
                                         @if ($notification->plan === 'Monthly')
-                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        {{ date('F j, Y', strtotime($notification->end_month)) }} <!-- Format as month name -->
                                         @elseif ($notification->plan === 'Yearly')
-                                        {{ $notification->end_year }}
+                                        {{ date('Y', strtotime($notification->end_month)) }} <!-- Format as year -->
                                         @endif
                                     </strong>.
                                 </p>
@@ -241,9 +241,9 @@
                                     Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
                                     <strong>
                                         @if ($notification->plan === 'Monthly')
-                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        {{ date('F j, Y', strtotime($notification->end_month)) }} <!-- Format as month name -->
                                         @elseif ($notification->plan === 'Yearly')
-                                        {{ $notification->end_year }}
+                                        {{ date('Y', strtotime($notification->end_month)) }} <!-- Format as year -->
                                         @endif
                                     </strong>.
                                 </p>
@@ -596,9 +596,9 @@
                                     Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
                                     <strong>
                                         @if ($notification->plan === 'Monthly')
-                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        {{ date('F j, Y', strtotime($notification->end_month)) }} <!-- Format as month name -->
                                         @elseif ($notification->plan === 'Yearly')
-                                        {{ $notification->end_year }}
+                                        {{ date('Y', strtotime($notification->end_month)) }} <!-- Format as year -->
                                         @endif
                                     </strong>.
                                 </p>
@@ -651,9 +651,9 @@
                                     Your payment for the lease of <strong>{{ $notification->location }}</strong> is due on
                                     <strong>
                                         @if ($notification->plan === 'Monthly')
-                                        {{ \Carbon\Carbon::create()->month($notification->end_month)->format('F') }}
+                                        {{ date('F j, Y', strtotime($notification->end_month)) }} <!-- Format as month name -->
                                         @elseif ($notification->plan === 'Yearly')
-                                        {{ $notification->end_year }}
+                                        {{ date('Y', strtotime($notification->end_month)) }} <!-- Format as year -->
                                         @endif
                                     </strong>.
                                 </p>

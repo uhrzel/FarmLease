@@ -8,8 +8,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->integer('start_month')->nullable()->after('total_payment');
-            $table->integer('end_month')->nullable()->after('start_month');
+            $table->date('start_month')->nullable()->after('total_payment');
+            $table->date('end_month')->nullable()->after('start_month');
             $table->integer('start_year')->nullable()->after('end_month');
             $table->integer('end_year')->nullable()->after('start_year');
         });

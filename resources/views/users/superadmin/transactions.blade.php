@@ -46,8 +46,14 @@
                                 </span>
                             </td>
                             <td class="px-4 py-3 text-center">
+                                @if (is_null($transaction->start_year) && is_null($transaction->end_year))
+                                {{ \Carbon\Carbon::parse($transaction->start_month)->format('F d, Y') ?? 'N/A' }} -
+                                {{ \Carbon\Carbon::parse($transaction->end_month)->format('F d, Y') ?? 'N/A' }}
+                                @else
                                 {{ $transaction->start_year ?? 'N/A' }} - {{ $transaction->end_year ?? 'N/A' }}
+                                @endif
                             </td>
+
 
                             <td class="px-4 py-3 text-center">{{ number_format($transaction->total_payment, 2) }}</td>
                         </tr>
@@ -97,17 +103,15 @@
                                     {{ ucfirst($transaction->status) }}
                                 </span>
                             </td>
-                            @php
-                            $months = [
-                            1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun',
-                            7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'
-                            ];
-                            @endphp
-
                             <td class="px-4 py-3 text-center">
-                                {{ $transaction->start_month ? ($months[$transaction->start_month] ?? 'N/A') : 'N/A' }} -
-                                {{ $transaction->end_month ? ($months[$transaction->end_month] ?? 'N/A') : 'N/A' }}
+                                @if (is_null($transaction->start_year) && is_null($transaction->end_year))
+                                {{ \Carbon\Carbon::parse($transaction->start_month)->format('F d, Y') ?? 'N/A' }} -
+                                {{ \Carbon\Carbon::parse($transaction->end_month)->format('F d, Y') ?? 'N/A' }}
+                                @else
+                                {{ $transaction->start_year ?? 'N/A' }} - {{ $transaction->end_year ?? 'N/A' }}
+                                @endif
                             </td>
+
 
                             <td class="px-4 py-3 text-center">{{ number_format($transaction->total_payment, 2) }}</td>
                         </tr>
