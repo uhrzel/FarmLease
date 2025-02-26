@@ -58,9 +58,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
         ->middleware('auth')
         ->name('feedbacks');
-    Route::get('/superadmin/notifications', function () {
-        return view('users.superadmin.mail_notification');
-    })->name('notifications');
+    Route::get('/superadmin/notifications', [UserController::class, 'getTenants'])->name('notifications');
+    Route::post('/send-email', [UserController::class, 'sendEmail'])->name('send.email');
 
 
     //Route for admin 

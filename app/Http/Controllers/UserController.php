@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\NotificationMail;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -43,4 +47,25 @@ class UserController extends Controller
     /**
      * Update the user's profile information.
      */
+
+    public function getTenants()
+    {
+        $tenants = User::where('role', 'tenant')->get();
+        return view('users.superadmin.mail_notification', compact('tenants'));
+    }
+    public function sendEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'subject' => 'required|string',
+            'message' => 'required|string',
+        ]);
+
+        try {
+            Mail::to($request->email)->send(new NotificationMail($request->subject, $request->message));
+            return response()->json(['status' => 'success', 'message' => 'Email sent successfully!']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => 'Failed to send email.']);
+        }
+    }
 }
