@@ -52,7 +52,7 @@ class PaymentController extends Controller
         $cart->start_year = $startYear;
         $cart->end_year = $endYear;
         $cart->total_payment = $request->total_payment;
-        $cart->down_payment = $request->down_payment;
+    $cart->down_payment = $request->down_payment;
 
         if ($request->total_payment == 0.00) {
             $cart->status = 'Paid';

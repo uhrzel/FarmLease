@@ -58,6 +58,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
         ->middleware('auth')
         ->name('feedbacks');
+    Route::get('/superadmin/notifications', function () {
+        return view('users.superadmin.mail_notification');
+    })->name('notifications');
+
 
     //Route for admin 
     Route::get('/admin/land-listings', [LandListingController::class, 'admin'])

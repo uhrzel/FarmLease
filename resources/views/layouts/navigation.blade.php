@@ -115,6 +115,11 @@
                             <i class="fas fa-exchange-alt mr-2"></i> {{__('Transactions')}}
                         </x-nav-link>
 
+                        <x-nav-link :href="route('notifications')" :active="request()->routeIs('notifications')"
+                            class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
+                            <i class="fas fa-bell mr-2"></i> {{__('Notifications')}}
+                        </x-nav-link>
+
                         <x-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')"
                             class="text-m font-semibold tracking-wide font-serif leading-relaxed text-gray-800 dark:text-gray-200">
                             <i class="fas fa-comment-alt mr-2"></i> {{__('Feedbacks')}}
@@ -128,7 +133,7 @@
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-1">
                 @auth
-                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin')
                 <!-- Notification Dropdown -->
                 <x-dropdown align="right" width="80">
                     <x-slot name="trigger">
@@ -526,7 +531,7 @@
             </div>
             <div class="-me-2 flex items-center sm:hidden gap-4">
                 @auth
-                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin' || auth()->user()->role === 'superadmin')
+                @if(auth()->user()->role === 'land_owner' || auth()->user()->role === 'admin')
                 <!-- Notification Button -->
                 <x-dropdown align="right" width="80">
                     <x-slot name="trigger">
@@ -749,6 +754,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('transactions')" :active="request()->routeIs('transactions')">
                 <i class="fas fa-exchange-alt mr-2"></i> {{__('Transactions')}}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('notifications')" :active="request()->routeIs('notifications')">
+                <i class="fas fa-bell mr-2"></i> {{__('Notifications')}}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('feedbacks')" :active="request()->routeIs('feedbacks')">
                 <i class="fas fa-comment-alt mr-2"></i> {{__('Feedbacks')}}

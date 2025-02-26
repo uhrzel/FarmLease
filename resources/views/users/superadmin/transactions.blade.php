@@ -11,7 +11,7 @@
                 <h5 class="text-lg text-gray-800 dark:text-gray-300 font-semibold mb-0">Tenant Transactions</h5>
             </div>
 
-            <div class="overflow-x-auto">
+        <div class="overflow-x-auto">
                 <table class="table-auto w-full border-collapse border border-gray-200 dark:border-gray-700">
                     <thead class="bg-gray-900 text-white dark:bg-gray-700">
                         <tr class="text-left">
