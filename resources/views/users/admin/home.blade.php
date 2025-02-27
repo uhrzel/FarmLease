@@ -80,7 +80,9 @@
                             ];
                             $statusColor = $statusColors[$status] ?? 'text-gray-500';
                             @endphp
-                            <strong class="{{ $statusColor }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</strong>
+                            <strong class="{{ $statusColor }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</strong> <br>
+                            <button class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
+                                onclick="openCommentModal()">View Comments</button>
                         </p>
                     </div>
 
@@ -90,7 +92,64 @@
                 <p class="text-gray-500 dark:text-gray-400">No approved land postings available.</p>
                 @endforelse
             </div>
+            <div id="commentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">View a Comment</h3>
+                    <div class="mb-4 max-h-40 overflow-y-auto border-b pb-2">
+                        <div class="flex items-start mb-3">
+                            <img src="https://via.placeholder.com/40" alt="User1" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">John Doe</p>
+                                <p class="text-gray-600 dark:text-gray-400">This is a sample comment.</p>
+                                <p class="text-yellow-500">Rating: ⭐⭐⭐⭐⭐</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start mb-3">
+                            <img src="https://via.placeholder.com/40" alt="User2" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Albert Einstein</p>
+                                <p class="text-gray-600 dark:text-gray-400">Another sample comment.</p>
+                                <p class="text-yellow-500">Rating: ⭐⭐⭐⭐</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start mb-3">
+                            <img src="https://via.placeholder.com/40" alt="User3" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Elon Musk</p>
+                                <p class="text-gray-600 dark:text-gray-400">Yet another comment example.</p>
+                                <p class="text-yellow-500">Rating: ⭐⭐⭐</p>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="flex justify-end mt-4">
+                        <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out mr-2"
+                            onclick="closeCommentModal()">Close</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function openCommentModal() {
+                    document.getElementById("commentModal").classList.remove("hidden");
+                }
+
+                function closeCommentModal() {
+                    document.getElementById("commentModal").classList.add("hidden");
+                }
+
+                function submitComment() {
+                    let comment = document.getElementById("commentText").value;
+                    let rating = document.getElementById("commentRating").value;
+                    if (comment.trim() === "") {
+                        alert("Please enter a comment.");
+                        return;
+                    }
+                    alert(`Comment Submitted:\n"${comment}"\nRating: ${"🌟".repeat(rating)}`);
+                    closeCommentModal();
+                }
+            </script>
             <!-- Scripts -->
             <script src="{{ asset('src/vendors/glightbox/dist/js/glightbox.min.js') }}"></script>
             <script src="{{ asset('src/vendors/@splidejs/splide/dist/js/splide.min.js') }}"></script>
