@@ -9,7 +9,7 @@ use App\Http\Controllers\RentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
-
+use App\Http\Controllers\CommentController;
 // Public Routes
 Route::get('/', fn() => view('welcome'));
 
@@ -83,6 +83,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/lessee/cart', [CartController::class, 'lessee'])->name('cart.lessee.index');
     Route::post('/cart/add', [CartController::class, 'store'])->middleware('auth')->name('cart.add');
     Route::post('/payment/process/{cart}', [PaymentController::class, 'processPayment'])->name('payment.process');
+
+    //comment
+    Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
 });
 
 // Profile Routes
