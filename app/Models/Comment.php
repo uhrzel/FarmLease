@@ -20,4 +20,8 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function landListing()
+    {
+        return $this->belongsTo(LandListing::class, 'landlisting_id', 'id');
+    }
 }

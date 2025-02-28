@@ -55,9 +55,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('generate_form');
     Route::get('/superadmin/land_posting', [LandListingController::class, 'index'])->name('land_posting');
     Route::get('/superadmin/transactions', [TransactionController::class, 'transactions'])->name('transactions');
-    Route::get('/superadmin/feedbacks', fn() => view('users.superadmin.feedbacks'))
-        ->middleware('auth')
-        ->name('feedbacks');
+    Route::get('/superadmin/fetch-feedbacks', [CommentController::class, 'index'])->name('feedbacks');
+
+
     Route::get('/superadmin/notifications', [UserController::class, 'getTenants'])->name('notifications');
     Route::post('/send-email', [UserController::class, 'sendEmail'])->name('send.email');
 

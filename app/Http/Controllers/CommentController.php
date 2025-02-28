@@ -54,4 +54,9 @@ class CommentController extends Controller
 
         return response()->json($comments);
     }
+    public function index()
+    {
+        $feedbacks = Comment::with(['user', 'landListing'])->get();
+        return view('users.superadmin.feedbacks', compact('feedbacks')); // Load your Blade file
+    }
 }
