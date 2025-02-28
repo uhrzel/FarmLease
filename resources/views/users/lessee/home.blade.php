@@ -103,7 +103,8 @@
                             @endphp
                             <strong class="{{ $statusColor }}">{{ ucfirst(str_replace('_', ' ', $status)) }}</strong> <br>
                             <button class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-                                onclick="openCommentModal()">Leave a Comment</button>
+                                onclick="openCommentModal({{ $listing->id }})">Leave a Comment</button>
+
                         </p>
                     </div>
 
@@ -115,52 +116,52 @@
                 <p class="text-gray-500 dark:text-gray-400">No approved land postings available.</p>
                 @endforelse
             </div>
-            <div id="commentModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Leave a Comment</h3>
-                    <div class="mb-4 max-h-40 overflow-y-auto border-b pb-2">
-                        <div class="flex items-start mb-3">
-                            <img src="https://via.placeholder.com/40" alt="User1" class="w-10 h-10 rounded-full mr-3">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">John Doe</p>
-                                <p class="text-gray-600 dark:text-gray-400">This is a sample comment.</p>
-                                <p class="text-yellow-500">Rating: ⭐⭐⭐⭐⭐</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start mb-3">
-                            <img src="https://via.placeholder.com/40" alt="User2" class="w-10 h-10 rounded-full mr-3">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Albert Einstein</p>
-                                <p class="text-gray-600 dark:text-gray-400">Another sample comment.</p>
-                                <p class="text-yellow-500">Rating: ⭐⭐⭐⭐</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start mb-3">
-                            <img src="https://via.placeholder.com/40" alt="User3" class="w-10 h-10 rounded-full mr-3">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">Elon Musk</p>
-                                <p class="text-gray-600 dark:text-gray-400">Yet another comment example.</p>
-                                <p class="text-yellow-500">Rating: ⭐⭐⭐</p>
-                            </div>
-                        </div>
-                    </div>
-                    <textarea id="commentText" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white" placeholder="Write your comment..."></textarea>
+            <div id="commentModal"
+                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-y-auto relative">
+                    <button onclick="closeCommentModal()"
+                        class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-400 text-xl">
+                        ✖
+                    </button>
 
-                    <label class="block mt-2 text-gray-900 dark:text-white">Rating:</label>
-                    <select id="commentRating" class="w-full p-2 border rounded-md dark:bg-gray-700 dark:text-white">
-                        <option value="5">🌟🌟🌟🌟🌟</option>
-                        <option value="4">🌟🌟🌟🌟</option>
-                        <option value="3">🌟🌟🌟</option>
-                        <option value="2">🌟🌟</option>
-                        <option value="1">🌟</option>
-                    </select>
+                    <h3 class="text-2xl font-semibold text-gray-900 dark:text-white text-center mb-6">
+                        Leave a Comment
+                    </h3>
 
-                    <div class="flex justify-end mt-4">
-                        <button class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out mr-2"
-                            onclick="closeCommentModal()">Cancel</button>
-                        <button class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out"
-                            onclick="submitComment()">Submit</button>
+                    <div id="comments-container"
+                        class="mb-6 max-h-60 overflow-y-auto border rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                        <p class="text-center text-gray-500 dark:text-gray-400">No comments yet.</p>
                     </div>
+
+                    <form id="commentForm">
+                        <input type="hidden" id="landlisting_id" name="landlisting_id"> <!-- Stores Land Listing ID -->
+
+                        <div class="mb-4">
+                            <label class="block text-gray-900 dark:text-white font-medium mb-2">Your Comment:</label>
+                            <textarea id="commentText" name="comments"
+                                class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white resize-none focus:ring focus:ring-green-400 transition duration-200"
+                                placeholder="Write your comment..." rows="4"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-900 dark:text-white font-medium mb-2">Rating:</label>
+                            <select id="commentRating" name="rating"
+                                class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:text-white focus:ring focus:ring-yellow-400 transition duration-200">
+                                <option value="5">⭐️⭐️⭐️⭐️⭐️ - Excellent</option>
+                                <option value="4">⭐️⭐️⭐️⭐️ - Good</option>
+                                <option value="3">⭐️⭐️⭐️ - Average</option>
+                                <option value="2">⭐️⭐️ - Below Average</option>
+                                <option value="1">⭐️ - Poor</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-end space-x-3">
+                            <button type="button"
+                                class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-5 rounded-lg shadow-md transition duration-300 ease-in-out"
+                                onclick="closeCommentModal()">Cancel</button>
+                            <button type="submit"
+                                class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-5 rounded-lg shadow-md transition duration-300 ease-in-out">
+                                Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- Scripts -->
@@ -172,7 +173,10 @@
             <script src="{{ asset('src/js/theme.js') }}"></script>
         </div>
         <script>
-            function openCommentModal() {
+            function openCommentModal(landlisting_id) {
+                console.log("Button clicked! Opening modal for listing ID:", landlisting_id);
+                document.getElementById("landlisting_id").value = landlisting_id;
+                fetchComments(landlisting_id);
                 document.getElementById("commentModal").classList.remove("hidden");
             }
 
@@ -180,15 +184,55 @@
                 document.getElementById("commentModal").classList.add("hidden");
             }
 
-            function submitComment() {
-                let comment = document.getElementById("commentText").value;
-                let rating = document.getElementById("commentRating").value;
-                if (comment.trim() === "") {
-                    alert("Please enter a comment.");
-                    return;
-                }
-                alert(`Comment Submitted:\n"${comment}"\nRating: ${"🌟".repeat(rating)}`);
-                closeCommentModal();
+            document.getElementById("commentForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                fetch("{{ route('comments.store') }}", {
+                        method: "POST",
+                        body: formData,
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("Comment added successfully!");
+                            closeCommentModal();
+                            location.reload();
+                        } else {
+                            alert("Error: " + data.message);
+                        }
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+
+            function fetchComments(landlisting_id) {
+                fetch(`/fetch-comments/${landlisting_id}`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        let container = document.getElementById('comments-container');
+                        container.innerHTML = '';
+
+                        comments.forEach(comment => {
+                            let ratingStars = '⭐'.repeat(comment.rating);
+                            let profileImage = comment.image ? comment.image : "/default-avatar.png"; // Fallback image
+
+                            container.innerHTML += `
+                    <div class="flex items-start space-x-3 mb-3">  
+                        <img src="${profileImage}" alt="Profile Image" class="h-10 w-10 rounded-full border-2 border-gray-300 dark:border-gray-600 object-cover">
+                        <div class="flex-1">
+                            <p class="text-sm font-semibold text-gray-700 dark:text-gray-300">${comment.firstname}</p>
+                            <p class="text-gray-600 dark:text-gray-400">${comment.comments}</p>
+                            <p class="text-yellow-500">Rating: ${ratingStars}</p>
+                        </div>
+                    </div>
+                `;
+                        });
+                    })
+                    .catch(error => console.error('Error fetching comments:', error));
             }
         </script>
         <script

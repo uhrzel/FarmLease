@@ -86,6 +86,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //comment
     Route::post('/comments/store', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/fetch-comments/{landlisting_id}', [CommentController::class, 'fetchComments']);
 });
 
 // Profile Routes
