@@ -32,6 +32,7 @@ class User extends Authenticatable
         'identity_recognition',
         'password',
         'role',
+        'avatar',
     ];
 
     /**

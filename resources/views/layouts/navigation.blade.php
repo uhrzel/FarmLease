@@ -284,7 +284,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
                             <!-- Profile Image -->
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
@@ -293,7 +293,7 @@
                     <x-slot name="content">
                         <!-- User Information in Dropdown -->
                         <div class="px-4 py-3 text-center">
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                             <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -338,7 +338,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
                             <!-- Profile Image -->
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
@@ -347,7 +347,7 @@
                     <x-slot name="content">
                         <!-- User Information in Dropdown -->
                         <div class="px-4 py-3 text-center">
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                             <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -390,7 +390,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
                             <!-- Profile Image -->
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
@@ -399,7 +399,7 @@
                     <x-slot name="content">
                         <!-- User Information in Dropdown -->
                         <div class="px-4 py-3 text-center">
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                             <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -437,7 +437,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
                             <!-- Profile Image -->
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
@@ -446,7 +446,7 @@
                     <x-slot name="content">
                         <!-- User Information in Dropdown -->
                         <div class="px-4 py-3 text-center">
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                             <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -484,7 +484,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center space-x-3 px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none transition duration-150">
                             <!-- Profile Image -->
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                         </button>
@@ -493,7 +493,7 @@
                     <x-slot name="content">
                         <!-- User Information in Dropdown -->
                         <div class="px-4 py-3 text-center">
-                            <img src="{{ Auth::user()->identity_recognition ? asset('storage/' . Auth::user()->identity_recognition) : asset('default-user.png') }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : asset('user-default.png') }}"
                                 class="mx-auto rounded-full object-cover border border-gray-300 shadow-sm"
                                 alt="User Profile" style="height: 40px; width: 40px;">
                             <p class="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">

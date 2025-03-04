@@ -79,7 +79,7 @@ class LandListingController extends Controller
                 'land_listings.id',
                 'land_listings.landowner_name',
                 'land_listings.location',
-                'users.identity_recognition as image',
+                'users.avatar as image',
                 'land_listings.created_at'
             ]);
 

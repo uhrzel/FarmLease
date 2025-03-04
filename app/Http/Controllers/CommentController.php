@@ -46,9 +46,9 @@ class CommentController extends Controller
                     'firstname' => $comment->user->firstname,
                     'comments' => $comment->comments,
                     'rating' => $comment->rating,
-                    'image' => $comment->user->identity_recognition
-                        ? asset('storage/' . $comment->user->identity_recognition)
-                        : asset('default-avatar.png'), // Use default if no image
+                    'image' => $comment->user->avatar
+                        ? asset('storage/' . $comment->user->avatar)
+                        : asset('user-default.png'), // Use default if no image
                 ];
             });
 

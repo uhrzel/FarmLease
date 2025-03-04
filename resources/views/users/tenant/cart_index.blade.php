@@ -62,7 +62,7 @@
             </div>
 
             <div class="flex items-center mt-6">
-                <img src="{{ asset('storage/'.$cart->landListing->owner->identity_recognition) }}" alt="Profile Image" class="w-20 h-20 rounded-full border border-gray-300 dark:border-gray-600 shadow-lg">
+                <img src="{{ asset('storage/'.$cart->landListing->owner->avatar) }}" alt="Profile Image" class="w-20 h-20 rounded-full border border-gray-300 dark:border-gray-600 shadow-lg">
 
                 <div class="ml-4">
                     <h4 class="text-xl font-bold text-gray-800 dark:text-gray-200">

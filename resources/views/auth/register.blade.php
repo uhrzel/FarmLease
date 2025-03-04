@@ -67,12 +67,19 @@
                 </div>
                 <div>
                     <label class="text-gray-600 text-sm mb-2 block">Password</label>
-                    <input type="password" name="password" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder="Enter password" required />
+                    <input type="password" name="password"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all"
+                        placeholder="Enter at least 8 characters" required />
+                    <p class="text-xs text-gray-500 mt-1">Must be at least 8 characters long.</p>
                 </div>
+
                 <div>
                     <label class="text-gray-600 text-sm mb-2 block">Confirm Password</label>
-                    <input type="password" name="password_confirmation" class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all" placeholder="Confirm password" required />
+                    <input type="password" name="password_confirmation"
+                        class="bg-gray-100 w-full text-gray-800 text-sm px-4 py-3 rounded focus:bg-transparent outline-blue-500 transition-all"
+                        placeholder="Confirm password" required />
                 </div>
+
             </div>
 
             <div class="mt-6">

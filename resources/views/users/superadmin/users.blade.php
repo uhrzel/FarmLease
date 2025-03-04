@@ -24,11 +24,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
                 @foreach ($landowners as $user)
                 <div class="user-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center flex flex-col justify-center items-center">
-                    @if($user->identity_recognition)
-                    <img src="{{ asset('storage/' . $user->identity_recognition) }}" alt="Profile Image" class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
-                    @else
-                    <span>No Image</span>
-                    @endif
+                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('user-default.png') }}"
+                        alt="Profile Image"
+                        class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
                     <h3 class="text-lg font-bold mb-2 text-gray-700 dark:text-gray-200">{{ $user->firstname . ' ' . $user->lastname }}</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400">LANDOWNERS</p>
                 </div>
@@ -47,11 +45,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
                 @foreach ($tenants as $user)
                 <div class="user-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center flex flex-col justify-center items-center">
-                    @if($user->identity_recognition)
-                    <img src="{{ asset('storage/' . $user->identity_recognition) }}" alt="Profile Image" class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
-                    @else
-                    <span>No Image</span>
-                    @endif
+
+                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('user-default.png') }}"
+                        alt="Profile Image"
+                        class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
+
                     <h3 class="text-lg font-bold mb-2 text-gray-700 dark:text-gray-200">{{ $user->firstname . ' ' . $user->lastname }}</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400">TENANTS</p>
                 </div>
@@ -70,15 +68,12 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6">
                 @foreach ($lessees as $user)
                 <div class="user-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center flex flex-col justify-center items-center">
-                    @if($user->identity_recognition)
-                    <img src="{{ asset('storage/' . $user->identity_recognition) }}" alt="Profile Image" class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
-                    @else
-                    <span>No Image</span>
-                    @endif
+                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('user-default.png') }}"
+                        alt="Profile Image"
+                        class="h-16 w-16 rounded-full border-3 border-gray-300 dark:border-gray-600 mb-4 object-cover mx-auto">
                     <h3 class="text-lg font-bold mb-2 text-gray-700 dark:text-gray-200">{{ $user->firstname . ' ' . $user->lastname }}</h3>
                     <p class="text-sm text-gray-500 dark:text-gray-400">LESSEES</p>
                 </div>
-
                 @endforeach
             </div>
         </section>

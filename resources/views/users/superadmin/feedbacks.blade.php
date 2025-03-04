@@ -17,9 +17,9 @@
             <div class="bg-white dark:bg-gray-900 shadow-lg rounded-xl p-6 mb-4 flex items-center space-x-6 transition hover:shadow-2xl">
                 <!-- User Avatar -->
                 @php
-                $userImage = $feedback->user->identity_recognition
-                ? asset('storage/' . $feedback->user->identity_recognition)
-                : asset('default-avatar.png');
+                $userImage = $feedback->user->avatar
+                ? asset('storage/' . $feedback->user->avatar)
+                : asset('user-default.png');
                 @endphp
                 <img src="{{ $userImage }}"
                     alt="User Avatar"

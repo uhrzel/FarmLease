@@ -38,7 +38,7 @@
             @foreach($tenants as $tenant)
             <div class="bg-white dark:bg-gray-900 shadow-md dark:shadow-lg dark:shadow-gray-800 rounded-lg p-6 flex flex-col items-center transition duration-300">
                 <div class="flex items-center space-x-4">
-                    <img src="{{ asset('storage/' . $tenant->identity_recognition) }}"
+                    <img src="{{ $tenant->avatar ? asset('storage/' . $tenant->avatar) : asset('user-default.png') }}"
                         alt="Profile Image"
                         class="h-16 w-16 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md dark:shadow-lg dark:shadow-gray-800">
                 </div>
@@ -122,7 +122,7 @@
                     .then(data => {
                         if (data.status === 'success') {
                             toastr.success(data.message);
-                            setTimeout(() => location.reload(), 2000); 
+                            setTimeout(() => location.reload(), 2000);
                         } else {
                             toastr.error(data.message);
                         }
